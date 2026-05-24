@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-04-06T20:10:00" agent="draw.io" version="21.0.0">
+  <diagram id="er-simplified" name="核心数据模型ER图(简化版)">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ==================== USER DOMAIN 容器 ==================== -->
+        <mxCell id="user_domain" value="USER DOMAIN 用户域"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;dashed=0;fontSize=13;fontStyle=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="20" y="20" width="340" height="320" as="geometry"/>
+        </mxCell>
+
+        <!-- User 用户表 -->
+        <mxCell id="user_tbl" value="&lt;b style='font-size:11px;'&gt;User 用户&lt;/b&gt;&lt;br&gt;&lt;hr size='1'&gt;&lt;div align='left' style='font-size:9px;'&gt;
+PK &amp;nbsp; id&lt;br&gt;
+     username&lt;br&gt;
+     password&lt;br&gt;
+     email&lt;br&gt;
+     role&lt;br&gt;
+     created_at&lt;/div&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;"
+          vertex="1" parent="1">
+          <mxGeometry x="35" y="55" width="115" height="105" as="geometry"/>
+        </mxCell>
+
+        <!-- LoginLog 登录日志 -->
+        <mxCell id="loginlog_tbl" value="&lt;b style='font-size:10px;'&gt;LoginLog 登录日志&lt;/b&gt;&lt;br&gt;&lt;hr size='1'&gt;&lt;div align='left' style='font-size:9px;'&gt;
+PK &amp;nbsp; id&ltbr&gt;
+FK &amp;nbsp; user_id → User&lt;br&gt;
+     ip_address&lt;br&gt;
+     status&lt;br&gt;
+     fail_reason&lt;br&gt;
+     login_at&lt;/div&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;"
+          vertex="1" parent="1">
+          <mxGeometry x="175" y="55" width="130" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- AuditLog 审计日志 -->
+        <mxCell id="auditlog_tbl" value="&lt;b style='font-size:10px;'&gt;AuditLog 审计日志&lt;/b&gt;&lt;br&gt;&lt;hr size='1'&gt;&lt;div align='left' style='font-size:9px;'&gt;
+PK &amp;nbsp; id&lt;br&gt;
+FK &amp;nbsp; user_id → User&lt;br&gt;
+     action_type&lt;br&gt;
+     resource_type&lt;br&gt;
+     description&lt;br&gt;
+     audit_at&lt;/div&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;"
+          vertex="1" parent="1">
+          <mxGeometry x="100" y="195" width="135" height="115" as="geometry"/>
+        </mxCell>
+
+        <!-- User域关系线 -->
+        <mxCell id="edge_u_login" value="1:N" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;labelBackgroundColor=#ffffff;fontSize=9;exitX=1;exitY=0.3;entryX=0;entryY=0.3;" edge="1" parent="1" source="user_tbl" target="loginlog_tbl">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_u_audit" value="1:N" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;labelBackgroundColor=#ffffff;fontSize=9;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="user_tbl" target="auditlog_tbl">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== DEVICE DOMAIN 设备域 ==================== -->
+        <mxCell id="device_domain" value="DEVICE DOMAIN 设备域"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;dashed=0;fontSize=13;fontStyle=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="20" y="360" width="340" height="310" as="geometry"/>
+        </mxCell>
+
+        <!-- Device 设备表 -->
+        <mxCell id="device_tbl" value="&lt;b style='font-size:10px;'&gt;Device 设备&lt;/b&gt;&lt;br&gt;&lt;hr size='1'&gt;&lt;div align='left' style='font-size:9px;'&gt;
+PK &amp;nbsp; device_id (UUID)&lt;br&gt;
+     name&lt;br&gt;
+     device_type&lt;br&gt;
+     ip_address&lt;br&gt;
+     location&lt;br&gt;
+     security_score&lt;br&gt;
+     updated_at&lt;/div&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;"
+          vertex="1" parent="1">
+          <mxGeometry x="35" y="395" width="130" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- DeviceGroup 设备分组 -->
+        <mxCell id="devicegroup_tbl" value="&lt;b style='font-size:9px;'&gt;DeviceGroup 设备分组&lt;/b&gt;&lt;br&gt;&lt;hr size='1'&gt;&lt;div align='left' style='font-size:9px;'&gt;
+PK &amp;nbsp; id&lt;br&gt;
+     name (unique)&lt;br&gt;
+     description&lt;br&gt;
+     color&lt;/div&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;"
+          vertex="1" parent="1">
+          <mxGeometry x="200" y="395" width="120" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- DeviceStats 设备统计 -->
+        <mxCell id="devicestats_tbl" value="&lt;b style='font-size:9px;'&gt;DeviceStats 设备统计&lt;/b&gt;&lt;br&gt;&lt;hr size='1'&gt;&lt;div align='left' style='font-size:9px;'&gt;
+PK/FK &amp;nbsp; device_id&lt;br&gt;
+     date&lt;br&gt;
+     normal_count&lt;br&gt;
+     anomaly_count&lt;/div&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;"
+          vertex="1" parent="1">
+          <mxGeometry x="200" y="515" width="120" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- DeviceGroups 关联表（小） -->
+        <mxCell id="groups_rel" value="&lt;b style='font-size:8px;'&gt;Device_Groups 关联表&lt;/b&gt;&lt;br&gt;&lt;hr size='1'&gt;&lt;div align='left' style='font-size:8px;'&gt;
+FK device_id → Device&lt;br&gt;
+FK group_id → DeviceGroup&lt;/div&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=8;"
+          vertex="1" parent="1">
+          <mxGeometry x="40" y="550" width="125" height="65" as="geometry"/>
+        </mxCell>
+
+        <!-- Device域关系线 -->
+        <mxCell id="edge_d_g" value="M:N" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;labelBackgroundColor=#ffffff;fontSize=9;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="device_tbl" target="devicegroup_tbl">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="180" y="455"/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="edge_d_stats" value="1:1" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;labelBackgroundColor=#ffffff;fontSize=9;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="device_tbl" target="devicestats_tbl">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== DETECTION DOMAIN 检测域 ==================== -->
+        <mxCell id="det_domain" value="DETECTION DOMAIN 检测域"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;dashed=0;fontSize=13;fontStyle=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="385" y="20" width="380" height="420" as="geometry"/>
+        </mxCell>
+
+        <!-- DetectionRecord 检测记录 -->
+        <mxCell id="detrec_tbl" value="&lt;b style='font-size:10px;'&gt;DetectionRecord 检测记录&lt;/b&gt;&lt;br&gt;&lt;hr size='1'&gt;&lt;div align='left' style='font-size:9px;'&gt;
+PK &amp;nbsp; id&lt;br&gt;
+FK &amp;nbsp; device_id → Device&lt;br&gt;
+     src_ip / dst_ip&lt;br&gt;
+     protocol&lt;br&gt;
+     dst_port&lt;br&gt;
+     is_anomaly&lt;br&gt;
+     anomaly_score&lt;br&gt;
+     detected_at&lt;/div&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;"
+          vertex="1" parent="1">
+          <mxGeometry x="400" y="55" width="140" height="145" as="geometry"/>
+        </mxCell>
+
+        <!-- DetectionTask 批量检测任务 -->
+        <mxCell id="dettask_tbl" value="&lt;b style='font-size:9px;'&gt;DetectionTask&lt;br&gt;批量检测任务&lt;/b&gt;&lt;br&gt;&lt;hr size='1'&gt;&lt;div align='left' style='font-size:9px;'&gt;
+PK &amp;nbsp; task_id (UUID)&lt;br&gt;
+     status&lt;br&gt;
+     total_count&lt;br&gt;
+     anomaly_count&lt;br&gt;
+     started_at&lt;/div&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;"
+          vertex="1" parent="1">
+          <mxGeometry x="585" y="55" width="130" height="115" as="geometry"/>
+        </mxCell>
+
+        <!-- ContinuousDetectionConfig 持续检测配置 -->
+        <mxCell id="config_tbl" value="&lt;b style='font-size:8px;'&gt;ContinuousDetectionConfig&lt;br&gt;持续检测配置&lt;/b&gt;&lt;br&gt;&lt;hr size='1'&gt;&lt;div align='left' style='font-size:9px;'&gt;
+PK &amp;nbsp; id (+1)&lt;br&gt;
+     enabled&lt;br&gt;
+     interval_seconds&lt;br&gt;
+     target_devices (JSON)&lt;br&gt;
+     total_detections&lt;/div&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;"
+          vertex="1" parent="1">
+          <mxGeometry x="585" y="195" width="140" height="115" as="geometry"/>
+        </mxCell>
+
+        <!-- Detection域关系线 -->
+        <mxCell id="edge_rec_task" value="N:1" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;labelBackgroundColor=#ffffff;fontSize=9;exitX=1;exitY=0.4;entryX=0;entryY=0.4;" edge="1" parent="1" source="detrec_tbl" target="dettask_tbl">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_rec_config" value="N:1" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;labelBackgroundColor=#ffffff;fontSize=9;exitX=1;exitY=0.75;entryX=0;entryY=0.5;" edge="1" parent="1" source="detrec_tbl" target="config_tbl">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Device→Detection 跨域连线 -->
+        <mxCell id="edge_dev_det" value="1:N" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;labelBackgroundColor=#ffffff;fontSize=9;exitX=1;exitY=0.5;entryX=0;entryY=0.25;dashed=1;" edge="1" parent="1" source="device_tbl" target="detrec_tbl">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="365" y="127"/><mxPoint x="365" y="100"/><mxPoint x="390" y="100"/></Array></mxGeometry>
+        </mxCell>
+
+        <!-- ==================== ALERT DOMAIN 告警域 ==================== -->
+        <mxCell id="alert_domain" value="ALERT DOMAIN 告警域"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;dashed=0;fontSize=13;fontStyle=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="385" y="460" width="380" height="210" as="geometry"/>
+        </mxCell>
+
+        <!-- AlertLog 告警日志 -->
+        <mxCell id="alert_tbl" value="&lt;b style='font-size:10px;'&gt;AlertLog 告警日志&lt;/b&gt;&lt;br&gt;&lt;hr size='1'&gt;&lt;div align='left' style='font-size:9px;'&gt;
+PK &amp;nbsp; id&lt;br&gt;
+FK &amp;nbsp; detection_id → Record&lt;br&gt;
+FK &amp;nbsp; device_id (optional)&lt;br&gt;
+     alert_level (critical/...)&lt;br&gt;
+     message&lt;br&gt;
+     status&lt;br&gt;
+     resolved_at&lt;/div&gt;"
+          style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;"
+          vertex="1" parent="1">
+          <mxGeometry x="400" y="495" width="155" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- Alert→Detection 跨域连线 -->
+        <mxCell id="edge_det_alert" value="1:N" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;labelBackgroundColor=#ffffff;fontSize=9;exitX=0.5;exitY=1;entryX=0.5;entryY=0;dashed=1;" edge="1" parent="1" source="detrec_tbl" target="alert_tbl">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="470" y="210"/><mxPoint x="470" y="480"/></Array></mxGeometry>
+        </mxCell>
+
+        <!-- ==================== 图例 ==================== -->
+        <mxCell id="legend" value="&lt;b&gt;图例&lt;/b&gt;&lt;br&gt;
+&amp;#9679; 一对一  1:1 | 1—1&lt;br&gt;
+&amp;#9679; 一对多  1:N | 1—N&lt;br&gt;
+&amp;#9679; 多对多  M:N (虚线)&lt;br&gt;
+&amp;#9679; 跨域引用 (虚线)"
+          style="text;html=1;strokeColor=#cccccc;fillColor=#fafafa;align=center;verticalAlign=top;whiteSpace=wrap;spacing=3;fontSize=9;rounded=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="720" y="30" width="130" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- 底部说明文字 -->
+        <mxCell id="footer" value="算法结果业务化、业务行为可追踪、状态变化可持久化"
+          style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=10;fontStyle=2;fontColor=#555555;"
+          vertex="1" parent="1">
+          <mxGeometry x="220" y="685" width="350" height="25" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

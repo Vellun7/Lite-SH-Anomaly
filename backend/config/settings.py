@@ -1,8 +1,9 @@
 """
-Django settings for Lite-SH-Anomaly project.
+Django settings for ShieldHome project.
 """
 
 from pathlib import Path
+from datetime import timedelta
 import os
 import pymysql
 
@@ -30,14 +31,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Third-party
     'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'channels',
     'drf_spectacular',
     # Local apps
+    'users.apps.UsersConfig',
     'devices.apps.DevicesConfig',
     'detection.apps.DetectionConfig',
     'logs.apps.LogsConfig',
+    'algorithm.apps.AlgorithmConfig',
 ]
+
+# 自定义用户模型
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -48,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 审计中间件 - 自动记录用户操作
+    'users.middleware.AuditMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -110,6 +120,10 @@ USE_TZ = True
 # Static files
 STATIC_URL = 'static/'
 
+# Media files
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -118,6 +132,12 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # REST Framework配置
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
@@ -131,6 +151,16 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
+# JWT配置
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+}
+
 # Swagger/OpenAPI配置
 SPECTACULAR_SETTINGS = {
     'TITLE': '智能家居异常检测系统 API',
@@ -139,6 +169,8 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
     'COMPONENT_SPLIT_REQUEST': True,
     'TAGS': [
+        {'name': '认证', 'description': '用户认证接口（登录、注册、登出）'},
+        {'name': '用户', 'description': '用户信息管理接口'},
         {'name': 'devices', 'description': '设备管理接口'},
         {'name': 'detection', 'description': '异常检测接口'},
         {'name': 'alerts', 'description': '告警管理接口'},
@@ -148,7 +180,7 @@ SPECTACULAR_SETTINGS = {
 
 # 算法模型路径配置
 ALGORITHM_DIR = PROJECT_ROOT / 'algorithm'
-MODEL_DIR = ALGORITHM_DIR / 'saved_models'
+MODEL_DIR = ALGORITHM_DIR / 'models'
 
 # 数据目录配置
 DATA_DIR = PROJECT_ROOT / 'data'

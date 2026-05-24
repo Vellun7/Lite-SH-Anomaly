@@ -11,7 +11,7 @@ class DetectionConfig(AppConfig):
     verbose_name = '异常检测'
     
     def ready(self):
-        """应用启动时加载模型"""
+        """应用启动时加载模型并恢复持续检测"""
         import logging
         logger = logging.getLogger(__name__)
         
@@ -24,3 +24,10 @@ class DetectionConfig(AppConfig):
                 logger.warning('检测模型未加载，使用模拟模式')
         except Exception as e:
             logger.error(f'模型加载失败: {e}')
+
+        # 恢复持续检测状态
+        try:
+            from detection.services.continuous_service import continuous_detection_service
+            continuous_detection_service.restore_from_db()
+        except Exception as e:
+            logger.error(f'恢复持续检测状态失败: {e}')

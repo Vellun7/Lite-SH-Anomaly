@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-04-05T12:25:00.000Z" agent="AI" version="24.0.0">
+  <diagram name="智能家居流量数据特点分析" id="flow-characteristics">
+    <mxGraphModel dx="1200" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- 标题栏 -->
+        <mxCell id="title" value="2.1.3 智能家居流量数据特点分析" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=18;fontStyle=1;fontColor=#1a1a2e;spacing=10;" vertex="1" parent="1">
+          <mxGeometry x="80" y="20" width="900" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ====== 第一部分：流量特点 ====== -->
+        <mxCell id="sec1-header" value="流量特点" style="text;html=1;strokeColor=none;fillColor=#2d6a4f;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="75" width="800" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- 表头 -->
+        <mxCell id="th1" value="特点维度" style="text;html=1;strokeColor=#2d6a4f;fillColor=#d8f3dc;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="105" width="180" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="th2" value="具体表现" style="text;html=1;strokeColor=#2d6a4f;fillColor=#d8f3dc;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="260" y="105" width="320" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="th3" value="对异常检测的意义" style="text;html=1;strokeColor=#2d6a4f;fillColor=#d8f3dc;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="105" width="300" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- 行1：设备异构性 -->
+        <mxCell id="row1-col1" value="设备异构性" style="text;html=1;strokeColor=#2d6a4f;fillColor=#f0fff4;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="133" width="180" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="row1-col2" value="• 摄像头：视频上报与远程查看&#xa;• 门锁：控制指令与状态同步&#xa;• 传感器：周期性小流量上传&#xa;→ 不同设备流量分布差异大" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=left;verticalAlign=top;fontSize=9.5;fontColor=#1a1a2e;spacing=2;" vertex="1" parent="1">
+          <mxGeometry x="260" y="133" width="320" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="row1-col3" value="检测模型需具备对异构流量的&#xa;自适应能力，或按设备类型&#xa;构建独立检测基准" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=left;verticalAlign=top;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="133" width="300" height="52" as="geometry" />
+        </mxCell>
+
+        <!-- 行2：行为周期性 -->
+        <mxCell id="row2-col1" value="行为周期性" style="text;html=1;strokeColor=#2d6a4f;fillColor=#f0fff4;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="185" width="180" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="row2-col2" value="• 用户作息形成流量节律&#xa;• 设备定时任务周期上报&#xa;• 自动化联动规则触发规律流量&#xa;→ 正常流量呈现日/周周期特征" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=left;verticalAlign=top;fontSize=9.5;fontColor=#1a1a2e;spacing=2;" vertex="1" parent="1">
+          <mxGeometry x="260" y="185" width="320" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="row2-col3" value="为基于行为模式的异常识别&#xa;提供天然基准；可利用周期&#xa;偏离程度辅助异常判定" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=left;verticalAlign=top;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="185" width="300" height="52" as="geometry" />
+        </mxCell>
+
+        <!-- 行3：规模有限但偏移明显 -->
+        <mxCell id="row3-col1" value="规模有限但偏移明显" style="text;html=1;strokeColor=#2d6a4f;fillColor=#f0fff4;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="237" width="180" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="row3-col2" value="• 单位时间内字节量激增&#xa;• 收发包比例异常&#xa;• 连接状态持续异常&#xa;→ 异常特征偏移幅度大、易捕捉" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=left;verticalAlign=top;fontSize=9.5;fontColor=#1a1a2e;spacing=2;" vertex="1" parent="1">
+          <mxGeometry x="260" y="237" width="320" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="row3-col3" value="有利于设计基于统计阈值&#xa;的轻量检测规则，异常&#xa;信号信噪比较高" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=left;verticalAlign=top;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="237" width="300" height="52" as="geometry" />
+        </mxCell>
+
+        <!-- ====== 第二部分：数据挑战 ====== -->
+        <mxCell id="sec2-header" value="数据挑战" style="text;html=1;strokeColor=none;fillColor=#b85450;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="305" width="800" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- 表头2 -->
+        <mxCell id="th4" value="挑战类型" style="text;html=1;strokeColor=#b85450;fillColor=#f8d7da;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="335" width="180" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="th5" value="具体表现" style="text;html=1;strokeColor=#b85450;fillColor=#f8d7da;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="260" y="335" width="320" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="th6" value="对应策略" style="text;html=1;strokeColor=#b85450;fillColor=#f8d7da;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="335" width="300" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- 行4：类别不平衡 -->
+        <mxCell id="row4-col1" value="类别不平衡" style="text;html=1;strokeColor=#b85450;fillColor=#fff5f5;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="363" width="180" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="row4-col2" value="正常样本远多于攻击样本；&#xa;不同异常类型之间样本规模也差异较大" style="text;html=1;strokeColor=#b85450;fillColor=#ffffff;align=left;verticalAlign=middle;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="260" y="363" width="320" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="row4-col3" value="采用无监督/半监督/弱监督&#xa;方法，不依赖大规模标注数据" style="text;html=1;strokeColor=#b85450;fillColor=#ffffff;align=left;verticalAlign=middle;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="363" width="300" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- 行5：异常样本稀缺 -->
+        <mxCell id="row5-col1" value="异常样本稀缺" style="text;html=1;strokeColor=#b85450;fillColor=#fff5f5;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="401" width="180" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="row5-col2" value="真实攻击场景数据难以获取，&#xa;样本库不足以支撑全类型监督学习" style="text;html=1;strokeColor=#b85450;fillColor=#ffffff;align=left;verticalAlign=middle;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="260" y="401" width="320" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="row5-col3" value="轻量化孤立森林基于距离隔离；&#xa;自编码器基于重构误差识别异常" style="text;html=1;strokeColor=#b85450;fillColor=#ffffff;align=left;verticalAlign=middle;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="401" width="300" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- 行6：数据获取成本高 -->
+        <mxCell id="row6-col1" value="真实数据获取成本高" style="text;html=1;strokeColor=#b85450;fillColor=#fff5f5;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="439" width="180" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="row6-col2" value="家庭网络流量涉及隐私，&#xa;公开高质量数据集稀缺" style="text;html=1;strokeColor=#b85450;fillColor=#ffffff;align=left;verticalAlign=middle;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="260" y="439" width="320" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="row6-col3" value="结合模拟数据生成，&#xa;通过统计特征与衍生特征&#xa;增强模型表征能力" style="text;html=1;strokeColor=#b85450;fillColor=#ffffff;align=left;verticalAlign=middle;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="439" width="300" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- ====== 第三部分：方法选择 ====== -->
+        <mxCell id="sec3-header" value="方法选择" style="text;html=1;strokeColor=none;fillColor=#6c8ebf;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="495" width="800" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- 方法表格 -->
+        <mxCell id="m-th1" value="方法" style="text;html=1;strokeColor=#6c8ebf;fillColor=#d6e4f0;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="525" width="200" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="m-th2" value="方法特性" style="text;html=1;strokeColor=#6c8ebf;fillColor=#d6e4f0;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="280" y="525" width="300" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="m-th3" value="为何适合智能家居场景" style="text;html=1;strokeColor=#6c8ebf;fillColor=#d6e4f0;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="525" width="300" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- 方法1：孤立森林 -->
+        <mxCell id="m1-col1" value="轻量化孤立森林&#xa;Isolation Forest" style="text;html=1;strokeColor=#6c8ebf;fillColor=#f0f4f8;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="553" width="200" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="m1-col2" value="基于二叉树路径长度隔离异常；&#xa;无需假设数据分布；可解释性强" style="text;html=1;strokeColor=#6c8ebf;fillColor=#ffffff;align=left;verticalAlign=middle;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="280" y="553" width="300" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="m1-col3" value="参数量小、推理速度快（50棵树/&#xa;深度≤8），适配资源受限的&#xa;智能家居设备" style="text;html=1;strokeColor=#6c8ebf;fillColor=#ffffff;align=left;verticalAlign=middle;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="553" width="300" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- 方法2：自编码器 -->
+        <mxCell id="m2-col1" value="简化自编码器&#xa;Autoencoder" style="text;html=1;strokeColor=#6c8ebf;fillColor=#f0f4f8;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="591" width="200" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="m2-col2" value="学习正常样本压缩表示；&#xa;以重构误差识别异常；&#xa;支持半监督训练" style="text;html=1;strokeColor=#6c8ebf;fillColor=#ffffff;align=left;verticalAlign=middle;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="280" y="591" width="300" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="m2-col3" value="瓶颈结构（8→4→2→4→8）&#xa;确保参数量&lt;100；&#xa;仅用正常样本训练即可检测异常" style="text;html=1;strokeColor=#6c8ebf;fillColor=#ffffff;align=left;verticalAlign=middle;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="591" width="300" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- 特征工程 -->
+        <mxCell id="feat-col1" value="特征工程&#xa;Feature Engineering" style="text;html=1;strokeColor=#6c8ebf;fillColor=#f0f4f8;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="629" width="200" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="feat-col2" value="构造统计特征（比例、速率）&#xa;与衍生特征（IP层字节、协议编码等）" style="text;html=1;strokeColor=#6c8ebf;fillColor=#ffffff;align=left;verticalAlign=middle;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="280" y="629" width="300" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="feat-col3" value="增强模型对异常行为的表征能力；&#xa;使检测算法聚焦于&#xa;流量行为层面的抽象建模" style="text;html=1;strokeColor=#6c8ebf;fillColor=#ffffff;align=left;verticalAlign=middle;fontSize=9.5;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="629" width="300" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- 底部总结 -->
+        <mxCell id="summary" value="总结：智能家居流量具有设备异构性、行为周期性和偏移明显等特点，同时面临类别不平衡和异常样本稀缺等数据挑战。因此本研究采用轻量化孤立森林和简化自编码器两类无监督方法，并通过特征工程增强异常表征能力，形成完整的轻量化异常检测方案。" style="text;html=1;strokeColor=#1a1a2e;fillColor=#fff9e6;align=left;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;spacing=4;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="690" width="800" height="50" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

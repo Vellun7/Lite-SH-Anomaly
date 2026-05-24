@@ -1,0 +1,104 @@
+<mxfile host="app.diagrams.net" modified="2026-04-05T19:55:00.000Z" agent="AI" version="24.0.0">
+  <diagram name="ER图" uuid="abc123">
+    <mxGraphModel dx="1200" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- 标题 -->
+        <mxCell id="title" value="4.3 数据库与数据模型设计 - ER图" vertex="1" parent="1" valueIsNode="1">
+          <mxGeometry x="600" y="20" width="400" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== User 表 ===== -->
+        <mxCell id="user_entity" value="User 用户表" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="100" width="200" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="user_pk" value="PK" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="85" y="155" width="20" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="user_id" value="id (UUID)&#xa;username&#xa;password&#xa;email" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="105" y="155" width="170" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- User 扩展字段 -->
+        <mxCell id="user_ext" value="phone&#xa;avatar&#xa;role (admin/user/guest)&#xa;last_login_ip&#xa;created_at&#xa;updated_at" style="text;html=1;strokeColor=#d4d4d4;fillColor=#f5f5f5;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="85" y="230" width="190" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== LoginLog 表 ===== -->
+        <mxCell id="loginlog_entity" value="LoginLog 登录日志表" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="380" width="200" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="loginlog_fields" value="PK id&#xa;&#xa;FK user_id ──────────────&#xa;ip_address&#xa;user_agent&#xa;login_time&#xa;status (success/failed)&#xa;fail_reason" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="85" y="435" width="190" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- User → LoginLog 关系 -->
+        <mxCell id="user_login_rel" value="1:N" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1.5;endFill=1;startFill=0;" edge="1" parent="1" source="user_entity" target="loginlog_entity">
+          <mxGeometry width="50" height="50" relative="0.5" as="geometry">
+            <mxPoint x="300" y="320" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ===== AuditLog 表 ===== -->
+        <mxCell id="auditlog_entity" value="AuditLog 审计日志表" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="400" y="100" width="220" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="auditlog_fields" value="PK id&#xa;&#xa;FK user_id ──────────────&#xa;username&#xa;action (login/logout/create/update/...)&#xa;resource_type (user/device/detection/...)&#xa;resource_id&#xa;resource_name&#xa;description&#xa;request_path&#xa;request_method&#xa;response_code" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="405" y="155" width="210" height="160" as="geometry"/>
+        </mxCell>
+
+        <!-- AuditLog 扩展字段 -->
+        <mxCell id="auditlog_ext" value="old_value (变更前数据)&#xa;new_value (变更后数据)&#xa;result (success/failed/partial)&#xa;error_message&#xa;ip_address&#xa;user_agent&#xa;session_id&#xa;created_at (索引)" style="text;html=1;strokeColor=#d4d4d4;fillColor=#f5f5f5;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="405" y="320" width="210" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- User → AuditLog 关系 -->
+        <mxCell id="user_audit_rel" value="1:N" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1.5;endFill=1;startFill=0;" edge="1" parent="1" source="user_entity" target="auditlog_entity">
+          <mxGeometry width="50" height="50" relative="0.5" as="geometry">
+            <mxPoint x="350" y="220" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ===== AlertLog 表 ===== -->
+        <mxCell id="alertlog_entity" value="AlertLog 告警日志表" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="400" y="480" width="220" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="alertlog_fields" value="PK id&#xa;&#xa;FK detection_id (可选)&#xa;device_id (索引)&#xa;level (info/warning/danger/critical)&#xa;status (pending/confirmed/resolved/ignored)&#xa;attack_type&#xa;title&#xa;description&#xa;confidence&#xa;src_ip / dst_ip&#xa;alert_time (索引)&#xa;resolved_at&#xa;created_at" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="405" y="535" width="210" height="200" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== SystemLog 表 ===== -->
+        <mxCell id="systemlog_entity" value="SystemLog 系统日志表" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="700" y="100" width="200" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="systemlog_fields" value="PK id&#xa;&#xa;log_type (detection/device/alert/system)&#xa;action&#xa;description&#xa;ip_address&#xa;user_agent&#xa;extra_data (JSON)&#xa;created_at (索引)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="705" y="155" width="190" height="130" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== 图例 ===== -->
+        <mxCell id="legend" value="图例说明" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#cccccc;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="100" width="160" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_content" value="PK ─ 主键&#xa;FK ─ 外键&#xa;─── 实线 ─ 必选关系&#xa;··· 虚线 ─ 可选关系&#xa;1:N ─ 一对多关系&#xa;&#xa;颜色编码：&#xa;■ 蓝色 ── 用户相关表&#xa;■ 黄色 ── 登录日志表&#xa;■ 绿色 ── 审计日志表&#xa;■ 红色 ── 告警日志表&#xa;■ 紫色 ── 系统日志表" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=9;fontFamily=Courier New;" vertex="1" parent="1">
+          <mxGeometry x="1205" y="130" width="150" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== 关系说明 ===== -->
+        <mxCell id="rel_desc" value="关系说明" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#cccccc;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="250" width="160" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="rel_desc_content" value="• User → LoginLog&#xa;  一个用户可有多条登录记录&#xa;• User → AuditLog&#xa;  一个用户可有多条审计记录&#xa;• LoginLog / AuditLog&#xa;  均通过user_id关联User表" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="1205" y="280" width="150" height="90" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

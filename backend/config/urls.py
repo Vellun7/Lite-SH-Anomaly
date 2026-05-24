@@ -1,5 +1,5 @@
 """
-URL configuration for Lite-SH-Anomaly project.
+URL configuration for ShieldHome project.
 RESTful API路由配置
 """
 
@@ -21,8 +21,10 @@ urlpatterns = [
     
     # API接口
     path('api/v1/', include([
+        path('', include('users.urls')),
         path('devices/', include('devices.urls')),
         path('detection/', include('detection.urls')),
         path('logs/', include('logs.urls')),
+        path('algorithm/', include('algorithm.urls')),
     ])),
 ]

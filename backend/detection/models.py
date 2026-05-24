@@ -41,6 +41,13 @@ class DetectionRecord(models.Model):
     confidence = models.FloatField('置信度', default=0.0)
     anomaly_score = models.FloatField('异常分数', default=0.0)
     
+    # 用户反馈（增量学习的数据来源）
+    feedback_label = models.BooleanField(
+        '用户反馈标签', null=True, blank=True, db_index=True,
+        help_text='None=未反馈, True=确认异常, False=纠正为正常(误报)'
+    )
+    feedback_at = models.DateTimeField('反馈时间', null=True, blank=True)
+
     # 元数据
     model_version = models.CharField('模型版本', max_length=32, default='v1.0')
     inference_time = models.FloatField('推理耗时(ms)', default=0.0)
@@ -90,3 +97,30 @@ class DetectionTask(models.Model):
     
     def __str__(self):
         return f'{self.task_id} - {self.status}'
+
+
+class ContinuousDetectionConfig(models.Model):
+    """持续检测配置（全局单例模式）"""
+
+    enabled = models.BooleanField('是否启用', default=False)
+    interval = models.IntegerField('检测间隔(秒)', default=60)
+    target_devices = models.JSONField('目标设备ID列表', default=list, blank=True)
+    total_detections = models.IntegerField('累计检测次数', default=0)
+    total_anomalies = models.IntegerField('累计异常次数', default=0)
+    started_at = models.DateTimeField('开始时间', null=True, blank=True)
+    updated_at = models.DateTimeField('更新时间', auto_now=True)
+
+    class Meta:
+        db_table = 'continuous_detection_config'
+        verbose_name = '持续检测配置'
+        verbose_name_plural = '持续检测配置'
+
+    def __str__(self):
+        status = '启用' if self.enabled else '停用'
+        return f'持续检测配置 - {status}'
+
+    @classmethod
+    def get_instance(cls):
+        """获取单例配置，不存在则创建"""
+        instance, __ = cls.objects.get_or_create(pk=1)
+        return instance

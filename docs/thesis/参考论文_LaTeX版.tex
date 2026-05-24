@@ -1,0 +1,1213 @@
+% ============================================
+%  参考论文 LaTeX 版本
+%  由 docx 自动转换生成
+% ============================================
+\documentclass[12pt, a4paper, twoside]{ctexart}
+\usepackage[top=2.54cm, bottom=2.54cm, left=3.18cm, right=3.18cm]{geometry}
+\usepackage{indentfirst}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{zhnumber}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{ragged2e}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.5em}
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black}
+
+% 代码块样式
+\lstset{
+    backgroundcolor=\color{gray!10},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+}
+
+% ============================================
+%  文档正文
+% ============================================
+\begin{document}
+
+目  录
+
+
+\chapter{设计总说明}
+
+随着智能摄像头、智能门锁、智能插座、环境传感器等设备在家庭场景中的广泛部署，智能家居网络逐渐呈现出设备数量多、通信协议复杂、运行环境开放和安全边界模糊等特征。一旦设备遭受恶意扫描、越权控制、分布式拒绝服务攻击或异常指令注入，不仅会造成家庭网络性能下降，还可能引发隐私泄露、设备失控及联动系统异常等安全风险。因此，围绕智能家居场景构建一套具备实时性、轻量化和工程可落地性的异常检测方法与应用系统，具有较强的理论意义和现实价值。
+
+本课题以"面向智能家居的轻量化异常检测算法设计与实现"为研究对象，面向家庭网关、嵌入式终端及低算力边缘节点的资源约束特性，围绕"数据构建—模型设计—系统实现—实验验证"四个环节展开研究。
+
+首先，结合公开网络安全数据与场景化模拟数据，完成智能家居异常流量数据集构建、数据清洗、类别编码、衍生特征设计与标准化处理，为后续模型训练提供统一的数据基础。其次，针对传统检测模型参数规模大、推理开销高、难以直接部署于轻量级设备的问题，设计轻量化孤立森林模型和轻量化自编码器模型，并结合规则前置过滤、自适应阈值和增量优化思路，形成适用于智能家居场景的异常检测方法。再次，在工程实现层面，基于 Django、Django REST Framework、Vue 3、Element Plus、ECharts 及 WebSocket 等技术，完成集用户认证、设备管理、实时检测、历史查询、性能监控、告警联动与审计追踪于一体的智能家居异常检测系统。最后，通过模型评估、功能测试与性能测试，对所设计方法和实现系统进行综合验证。
+
+本课题研究的重点在于：一是兼顾检测精度与部署代价，在保证异常检测能力的基础上控制模型复杂度与推理延迟；二是建立适合智能家居网络流量特点的轻量化特征体系，提升模型对多类典型威胁的识别能力；三是打通数据处理、模型服务、接口调用和前端展示的完整链路，实现可视化、可交互、可验证的异常检测平台。
+
+现阶段研究工作表明，所构建的方法与系统已经具备较好的工程基础，能够为智能家居环境下的异常行为识别与安全态势感知提供有效支撑。
+
+关键词：智能家居；异常检测；轻量化模型；孤立森林；自编码器；安全监测系统
+
+
+\chapter{introduction}
+
+With the rapid deployment of smart cameras, smart locks, sensors and home gateways, smart home networks have become increasingly complex and vulnerable to cyber threats. Compared with traditional enterprise networks, smart home environments usually contain heterogeneous devices, limited computing resources, unstable communication conditions and relatively weak security protection mechanisms. These characteristics make it difficult to directly apply conventional anomaly detection solutions with high computational overhead.
+
+This thesis focuses on the design and implementation of a lightweight anomaly detection approach for smart home scenarios. The work is organized around four aspects: dataset construction and preprocessing, lightweight model design, system implementation, and experimental evaluation. In the data layer, public datasets and simulated traffic are combined to form a standardized dataset for abnormal behavior analysis. In the algorithm layer, a lightweight Isolation Forest and a lightweight AutoEncoder are designed to meet the requirements of low latency, low memory usage and practical deployment. In the application layer, a full-stack system based on Django and Vue is developed to provide real-time detection, alert management, historical query and visual monitoring.
+
+The main goal of this thesis is to build a complete and deployable solution that can support anomaly detection under resource-constrained smart home environments. The proposed work not only emphasizes detection accuracy, but also focuses on engineering feasibility, system integration and practical usability. The remainder of this thesis is organized as follows. Chapter 1 introduces the research background, significance, research contents and technical route. Chapter 2 presents related theories and key technologies. Chapter 3 describes the design and implementation of lightweight anomaly detection models. Chapter 4 discusses the system architecture and functional implementation. Chapter 5 gives the testing process and result analysis. Chapter 6 concludes the thesis and outlines future work.
+
+Keywords: Smart Home; Anomaly Detection; Lightweight Model; Isolation Forest; Autoencoder; Security Monitoring System
+
+面向智能家居的轻量化异常检测算法设计与实现
+
+物联网工程，202111672419，刘燊林
+
+指导教师：徐国保，洪忠海
+
+毕业设计说明书
+
+
+\chapter{绪论}
+
+
+\section{研究背景}
+
+随着社会的快速发展，人口呈现指数型增长趋势。截至2024年，全球总人口已达到82亿，其中中国人口超过14亿，位居世界首位。在如此庞大的人口基数下，粮食供给已成为未来发展过程中亟待解决的严峻问题。根据国家统计局2024年统计年鉴显示，中国在2023年的耕地面积为128.6万平方公里,人均耕地面积相对有限，在世界排名中位居靠后。同时中国耕地整体质量较低和山区面积广大，限制了大规模机械化和产业化种植方式的实施。
+
+而在这种情况下，农民种植的作物还受到病虫害的危害，导致农作物产量下降，这也直接关系到国民日常的生活需求以及社会发展的动力。目前中国大多数农民在面对农作物病虫害时，对其的认知和防治方法往往来源于自身有限的经验，缺乏具体的科学支持，这使得当农作物发生病虫害时，他们不能有效地分辨出病虫害的类别，从而凭借自身经验盲目地使用农药。虽然这种作法有些时候能够起到一定作用，但通常情况下难以有效地控制病虫害，反而有可能导致农作物受到影响以及对周围环境、土壤和水源等造成污染。目前解决农业病虫害的危害关键是需要有效地识别农业病虫害的类别，从而能够正确地选择治理方式进行处理。随着计算机技术的不断发展壮大，图像识别领域也日渐成熟，与农民依靠自己有限的经验去分辨农作物病虫害类别相对比，使用图像识别技术在识别准确率、效率和适用性上更具有显著优势。
+
+在2012年，由于Krizhevsky[1]等人提出新型的深度学习网络模型AlexNet在ImageNet图像分类挑战赛中取得优异的性能并获得比赛的冠军后，深度学习得到快速发展，各种神经网络模型层次不穷，图像识别领域也诞生出许多优秀的模型，例如YOLO目标检测模型。这些模型在许多场景下都表现出比人类更高的准确率和识别效率。
+
+目前如果能够建立基于深度神经网络的农业病虫害智能识别系统，因为模型训练规律的相似性，通过使用网站上公开的农业病虫害数据集，能够更好地进行推广使用，同时在检测到具体农作物病虫害类别时，也能够通过网络寻找合适的防治方法。虽然目前存在山区面积广大、不利于大规模机械化和产业化种植的情况，但通过基于深度神经网络的农业病虫害智能识别系统的使用，能够合理地通过科学方法来提高农业生产力。系统能够有效检测农作物病虫害类别的同时，也能提供相应的防治方法，这不仅可以让农民提高病虫害的认知水平和防治能力，也能够提升农作物的产量和减少因盲目使用农药导致的环境污染问题，从而促进社会的可持续发展。
+
+
+\section{农业病虫害图像识别研究现状}
+
+
+\subsection{农业病虫害图像识别国内研究现状}
+
+吴克强[2]等人针对10种常见的水稻疾病，提出了新型的图像分割操作流程：首先，对原始图像进行灰度处理；然后，通过Laplace边缘算法对原始图像的灰度图提取边缘特征，并采用形态学方法进一步处理边缘特征；随后，通过OTSU算法自动将图像的前景和后景进行分割；接着，描述轮廓并选择面积最大的外接矩形轮廓；最后，对原始彩色图像进行抠图，得到分割后的病虫害区域分割图像。经实验结果分析，InceptionResNet-v2模型在10种常见水稻疾病上的最高分类精确度为94.93\%。岳有军[3]等人进行高阶残差、参数共享反馈子网络与VGG神经网络结合，提出改进VGG模型，并进行实验分析，在PlantVillage数据集的子集（拥有褐斑病、炭疽病、黄萎病、枯萎病、轮纹病五种病虫害类别，和1种正常叶片）中平均识别准确率达到90.90\%。曹震宇[4]选用PlantVillage数据集的番茄黄化曲叶病、番茄细菌性叶斑病、番茄灰叶斑病等9种病虫害类别图像和一种正常番茄叶片作为实验数据集，然后对SqueezeNet的fire模块进行改进并结合卷积块注意力机制模块（CBAM, Convolutional Block Attention Module）提出SqueezeNet\_new模型，随后进行实验分析，模型的平均识别精确率达到97.92\%，相对于原模型提升了1.41\%。余胜[5]等人在视觉转换器(ViT，VisionTransformer）模型中添加卷积操作和注意力机制模块，提升模型获取图像特征丰富度能力和降低图像中噪音和无关特征的影响，使用迁移学习方法，首先在ibean进行训练，模型的准确率达到98.12\%，然后在PlantVillage数据集中进行训练，最终模型的准确率达到99.91\%，表现良好。吕佳[6]等人针对现有的小样本学习中农作物病虫害图像识别参数量过大和容易出现梯度消失问题，提出了多分支分组卷积的特征级联模型。模型利用分组卷积优化残差模块来缓解梯度消失；同时利用多层特征级联融合浅层细节信息和深层语义信息，降低模型的参数和提升网络的泛化能力。通过实验分析，在PlantVillage数据集的5-way、1-shot和5-way、5-shot任务上识别准确率分别达到79.68\%和93.25，相对于原始的模型，分别提升了3.74\%和4.32\%。
+
+
+\subsection{农业病虫害图像识别国外研究现状}
+
+自2012年，Krizhevsky[1]等人在ImageNet图像分类挑战赛中夺得比赛冠军后，卷积神经网络（CNN，Convolutional Neural Network）迎来了飞速发展，并且随着硬件的升级，更加深层次的卷积神经网络训练成为可能。Mohanty[7]等人使用患病和健康植物叶片的公开数据集（共有54306张图像，包含有14农作物和26种病害），通过建立深度卷积神经网络进行训练，训练后的模型在保留的测试集上的准确率达到99.35\%。Fujita[8]等人使用7,520张黄瓜叶片图像，数据集包含健康的叶片和几乎所有病毒型感染的病虫害类别，建立卷积神经网络进行训练，在4折交叉验证的策略下，模型的平均准确率达到82.3\%。Lu[9]等人建立深度卷积神经网络对500幅病害和健康的水稻叶片和茎秆的自然图像数据集（包含10种常见的水稻病虫害）进行训练识别，在10倍交叉验证的策略下，深度卷积神经网络模型的准确率达到95.48\%。Fuentes[10]等人建立深度学习元架构，包括基于区域的快速卷积神经网络（Faster R-CNN）、基于区域的全卷积网络（R-FCN）和单次多框检测器（SSD），在大型番茄病害和害虫数据集种训练，实验结果表明，系统能够有效识别九种不同类型的病害和害虫。Ferentinos[11]等人建立卷积神经网络模型在87848张图像数据集，包含25种不同植物和58个独立的[植物，病害]类别（包括健康植物），通过实验分析，模型的识别准确率达到99.53\%。Zhang[12]等人通过结合膨胀卷积和全局池化的全局池化膨胀卷积神经网络（GPDCNN），用于植物病害识别，通过与深度卷积神经网络（CNN）和AlexNet模型对比，GPDCNN模型能够更有效地六种常见黄瓜叶病虫害。Sujatha[13]等人使用机器学习方法（ML，包括SGD、RF、SVM）和 深度学习方法（DL，包括Inception-v3、VGG-16、VGG-19）两种方法对柑橘叶病进行分类，在10倍交叉验证的策略下，通过实验结果分析，DL方法的表现优于ML方法。Wang[14]等人田间采样收集作物图像构建数据集，包含香梨病虫害和健康状态，基于AlexNet模型，通过优化全连接层和设置不同的神经元节点和实验参数，提出改进的AlexNet模型，经过实验训练，模型在识别香梨病虫害的平均准确率达到96.26\%，且运用于其他病虫害数据集中平均准确率不低于91\%，模型具有良好的易迁移性。Omer[15]等人在现实场景中采集黄瓜叶病虫害图像并建立新的黄瓜叶病虫害数据集，基于YOLOv5l模型，采用Bottleneck CSP模块代替C3作为骨干和颈部网络部分，然后添加卷积块注意力机制模块（CBAM, Convolutional Block Attention Module），通过实验对比，与原始的YOLOv5l模型对比，改进后的YOLOv5l模型性能更优，平均精度均值（mAP）达到80.10\%。
+
+
+\subsection{国内外农业病虫害图像识别发展存在的不足}
+
+现有的国内外的农业病虫害图像识别研究中，许多模型对于农业病虫害识别都表现出较高的精度，但由于选择的病虫害数据集的类别较少，使得其仅限于在特定的病虫害场景，不能覆盖大部分的农业病虫害检测，且模型适用范围限制在单目标检测，无法进行多目标检测，即是如果图像中如果出现多个农作物时，无法同时为这些农作物进行定位并检测各自病虫害的类别。而一些模型尽管其能够识别更多类别且能够进行多目标检测，表现出更优良的适用性，但往往需要以精度下降作为代价,这种精度与适用性的矛盾，使得在实际模型应用过程中很难兼顾精度和适用性的要求。目前，许多研究仅限于研究模型的优越性，并没有开发一款能够实时进行农业病虫害类别精确检测的识别系统。
+
+根据上述分析，本研究拟解决以下三个问题：
+
+（1）针对当前研究中农业病虫害数据集的类别较少问题，如何进行合理选取农业病虫害类别更加丰富的数据集。
+
+（2）针对中大规模目标检测模型参数量大、计算开销大、对硬件设备要求较高，应用到实际设备时出现内存需求过大、对农业病虫害检测速度慢等问题，如何在保证模型检测精度高的同时保持模型的轻量化。
+
+（3）针对当前并没有一款农业病虫害智能识别系统，如何设计一款集成系统，不仅能够实时传输和显示环境温湿度、光照和图像数据，也能够进行实时农业病虫害的高精度检测。
+
+
+\section{研究目的与意义}
+
+在基于深度神经网络的农业病虫害智能识别研究中，本研究以深度学习和目标检测算法模型为技术指导，通过建立目标检测模型对获取的农业病虫害数据集进行分析，从而得到合理地农业病虫害智能识别模型，实现对农作物病虫害类别的智能诊断。主要包括五个研究目的：
+
+（1）通过在基准YOLOv5s模型中引入CBAM注意力机制（Convolutional Block Attention Module）、高分辨率特征整合层（P2）和Ghost模块，在不明显增加模型结构复杂度、参数量和计算开销的情况下，解决基准YOLOv5s模型识别精度略有不足的问题。
+
+（2）通过引用相似的模块进行实验比较，分别验证CBAM注意力机制和Ghost模块的有效性。
+
+（3）使用目前主流的YOLO系列模型和当前农业病虫害目标检测领域的前沿模型进行实验比较，验证本研究提出模型的有效性。
+
+（4）设计硬件设备进行实时采集和传输环境温湿度、光照和图像数据。
+
+（5）将本研究提出的模型结合到基于深度神经网络的农业病虫害智能识别系统中，能够快速并准确的农作物病虫害进行识别分类，为农业病虫害防治提供基础。
+
+本研究通过在基准YOLOv5s模型中引入CBAM注意力机制（Convolutional Block Attention Module）、高分辨率特征整合层（P2）和Ghost模块三种模块，能够使模型能够进行实时精确的农业病虫害识别。基于深度神经网络的农业病虫害智能识别系统的开发，能够为农户快速识别农作物病虫害类别，以及可以实时查看环境温湿度和光照数据，从而进行合理的农业病虫害防治措施。
+
+
+\section{研究内容及技术路线}
+
+
+\subsection{研究内容}
+
+为实现农业病虫害实时、准确的识别，本研究面向在Kaggle平台中收集到的PlantVillage for Object Detection YOLO数据集，进行如下三方面的研究：
+
+（1）基于YOLOv5s模型具有检测精度良好和轻量化的显著优势，本研究提出YOLO-PestNet模型。主要工作为：引入CBAM注意力机制，有效提取图像关键特征；引入高分辨率特征整合层（P2），提升模型病理区域占比较小场景的适应度，提升农业病虫害的检测性能；引入Ghost模块，能够保持模型保持原有检测性能的同时降低模型的参数量和计算开销。
+
+（2）为验证CBAM注意力机制的有效性，本研究在基准YOLOv5s模型中引入SE（Squeeze-and-Excitation）和ECA（Efficient Channel Attention）注意力机制模块进行实验对比；为验证Ghost模块的有效性，本研究引入GC（Global Context）模块和RVB（RepViT Block）模块对YOLOv5s模型网络结构进行优化，并进行实验对比。
+
+（3）选用主流的YOLO系列模型（YOLOv3-tiny、YOLOv5s、YOLOv10s、YOLOv11n、YOLOv11s）和当前农业病虫害目标检测领域的前沿模型（YOLO-CRD）与本研究提出的YOLO-PestNet模型在相同的实验环境下进行实验对比，验证本研究提出模型的有效性。
+
+（4）使用STM32F103C8T6和ESP32-CAM开发板进行实时采集和传输环境中的温湿度、光照和图像数据。
+
+（5）基于深度神经网络方法，开发一款农业病虫害智能识别系统。将训练好的YOLO-PestNet模型和接收到的温湿度、光照和图像数据结合到基于深度神经网络的农业病虫害智能识别系统中，农户可以实时查看环境的数据和进行农业病虫害类别的精准识别，从而可以进行合理地病虫害的防治。
+
+内容（1）、（2）和（3）在第3章进行研究，内容（4）和（5）在第4和5章进行研究。
+
+
+\subsection{技术路线}
+
+全文总体技术总线如图1-1所示。本研究以深度学习和目标检测算法模型为技术指导，以PlantVillage for Object Detection YOLO数据集作为研究对象，研究基于深度学习神经网络构建农业病虫害识别系统。整体的研究技术路线分为以下几个步骤：（1）数据准备。选用公开数据集PlantVillage for Object Detection YOLO数据集，共有54293张图像，包括14种植物和38个类别。（2）数据集预处理。将数据集中的图像分辨率统一调整到640×640，以满足YOLOv5模型对输入尺寸的需求；进行数据增强，提高数据集的多样性，从而提升模型的泛化能力。（3）选用和改进模型。选用YOLOv5s模型为基准模型，在其基础上依次添加CBAM注意力机制、高分辨率特征融合层（P2）和Ghost模块，从而提出YOLO-PestNet模型，通过预训练和测试集测试后，选取性能最佳的权重文件。（4）硬件设备。利用STM32F103C8T6开发板接收温湿度传感器和光敏传感器采集到的温湿度和光照数据，通过串口协议将温湿度和光照数据传输到ESP32-CAM开发板中。（5）将YOLO-PestNet模型性能最佳的权重文件和ESP32-CAM开发板中温湿度、光照和图像数据结合到基于深度神经网络的农业病虫害智能识别应用中，为农业病虫害防治提供基础。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图1-1 全文总体技术总线}
+\end{figure}
+
+
+\chapter{系统相关技术简介}
+
+
+\section{开发语言}
+
+
+\subsection{Python语言}
+
+Python语言是一种解释型、高级和通用的编程语言，其通常以简洁优雅的语法结构和拥有强大的标准库，能够满足不同场景使用需求，受到众多开发者的喜爱。Python语言采用缩进方式来进行划分代码块，能够增强代码结构性，减少冗余符号，增加代码的可读性。
+
+目前Python语言凭借丰富的三方库，例如NumPy、Pandas、Torch等，能够让Python语言在数据分析、人工智能等领域有着广泛的应用。
+
+
+\subsection{MicroPython语言}
+
+MicroPython语言是Python语言的精简版，针对一些资源受限的嵌入式设备而设计，其保持Python语言的核心特性，为适应嵌入式系统存储空间、计算开销等限制，对标准库进行裁剪。
+
+MicroPython语言拥有直观简洁的编程方式，同时开发者可以在硬件设备中进行交互式编程，不需要进行编译和烧录步骤，能够有效地缩减开发周期。MicroPython语言编程过程中，可以针对设备的功能需求，烧录相应的固件，例如ESP32-CAM开发板可以通过烧录带有camera硬件接口的固件，从而能够调用该接口去控制开发板中的摄像头模块。
+
+
+\subsection{C语言}
+
+C语言是一种高效、灵活且接近底层的通用编程语言，其具有良好的硬件驱动能力，在嵌入式系统开发中占据核心地位。C语言具备结构化编程、高效运行、指针操作等特征，能够满足系统级的开发和要求性能过高的应用中。
+
+在STM32开发板中，C语言能够通过操作寄存器去控制GPIO、UART、I2C等外设，也能够进行位运算和中断控制，实现精准的任务控制。通常情况下，开发者可以使用STM32官方提供的HAL库进行快速的开发，但为了获取更高效的执行性能，选择编写底层代码。
+
+C语言凭借自身强大的硬件适配能力和目前广泛的应用生态，其仍然是嵌入式开发中重要的开发语言之一。
+
+
+\section{关键技术理论}
+
+
+\subsection{深度学习}
+
+深度学习是一种基于人工神经网络的机器学习方法，由于随着互联网时代快速发展，目前拥有庞大的数据量和强大的算力，深度学习得到巨大的发展。深度学习最强大的特征是能够自动从数据样本中学习特征，相对比传统机器学习方法中使用人工设计的特征，其表达的特征更稳健和高效。
+
+深度学习的核心框架有传统卷积神经网络（CNN）、循环神经网络（RNN）、Transformer等，广泛应用计算机视觉、自然语言处理等领域。随着目前神经网络模型框架的不断优化和硬件设备算力的显著提升，深度学习成为人工智能领域发展的重要推动力，为智能化和自动化技术发展提供有力的支持。
+
+
+\subsection{PySide2图形编程框架}
+
+PySide2图形编程框架是基于Qt 5的Python图像用户界面开发框架，其相对于PyQt5，虽然使用的框架相同，但在实际使用过程中并不需要购买商业许可证或者开源所编写的应用，这使得PySide2在拥有与PyQt5相同使用功能的情况下，还具备更加灵活的使用特性。
+
+PySide2依靠Qt 5框架，具有图形绘制、事件处理、布局管理等强大功能，同时支持多线程、网络通信等拓展功能。目前在绘制图像界面时，可以直接选择PySide2的函数功能进行构建，但通常情况下，所设计的模块等需要反复调整其位置和形状等，需要花费大量的时间，而另外一种方式是利用QT Designer软件，其能够进行直观式的拖拽模块进行快速构建图像界面。
+
+PySide2借助Python语言的简洁性，能够显著地降低学习和开发的难度，并且利用自带的QT Designer软件加速图形界面构建的流程，使得PySide2成为当前构建图形界面的热门选项。
+
+
+\chapter{基于深度学习网络的农业病虫害识别模型}
+
+
+\section{数据集介绍}
+
+本研究所使用的数据集为广泛认可的 PlantVillage 的改编版，Sebastian Palacio Betancur[16]在2024年7月9日发布PlantVillage for Object Detection YOLO数据集于Kaggle平台中，针对YOLO目标检测算法模型的需求，对数据集的图像进行数据标注操作，标注内容包括目标的类别、边界框的中心位置、宽度和高度。
+
+PlantVillage for Object Detection YOLO数据集共有54293张图像，包括苹果、蓝莓、樱桃、玉米、葡萄等14种植物和38种植物的不同疾病和健康状况的类别。其中数据集的示例图像如图3-1所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图3-1 PlantVillage for Object Detection YOLO数据集示例图像}
+\end{figure}
+
+PlantVillage for Object Detection YOLO数据集的整体分布情况如表3-1所示。
+
+表3-1 PlantVillage for Object Detection YOLO数据集信息
+
+续表3-1
+
+由于PlantVillage for Object Detection YOLO数据集尚未进行划分，为确保YOLOv5 模型的实验进能够进行，本研究对该数据集按照 8:1:1 的比例随机划分为训练集、验证集和测试集，以用于后续YOLOv5 模型的训练和评估。
+
+
+\section{数据集预处理}
+
+
+\subsection{Resize}
+
+在YOLOv5模型训练过程中，需要固定输入图像的尺寸。然而，PlantVillage for Object Detection YOLO数据集中的图像尺寸不一致。为了保证图像尺寸满足YOLOv5模型输入需求的同时，尽可能减少由于图像尺寸变化而产生的模型检测性能下降问题，本研究选用保持纵横比的方法来进行图像尺寸的调整，具体操作步骤如下:
+
+计算图像的缩放比例如公式（3-1）所示。
+
+公式（3-1）中，和分别表示原始图像的宽度和高度；和分别表示目标图像的宽度和高。
+
+计算缩放后的图像尺寸，如公式（3-2）所示。
+
+公式（3-2）中，round函数用于将数值到其最接近的整数。
+
+计算填充量，如公式（3-3）所示。
+
+公式（3-3）中，由于YOLOv5模型的Backbone层进行了5次下采样操作，因此总步长（Stride）为32。为了确保调整尺寸后的图像步长对齐，并避免部分像素信息的丢失，对填充量进行取模运算，以确保调整后的图像尺寸为32的倍数。
+
+进行均匀分配填充，如公式（3-4）所示。
+
+计算四个方向上的填充量，如公式（3-5）所示。
+
+使用cv2.copyMakeBorder函数根据四个方向的填充量，将原始图像按比例调整大小后，嵌入到640×640的图像框中，且填充颜色设为灰色。
+
+进行自适应缩放操作后，得到的结果如图3-2所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图3-2 对原始图像进行自适应缩放的结果}
+\end{figure}
+
+
+\subsection{数据增强}
+
+在PlantVillage for Object Detection YOLO数据集中，由于部分类别的样本数量较少，例如苹果杉锈病和健康马铃薯的图像数量分别为275张和152张，使得模型训练不能达到预期的性能效果。
+
+在农业病虫害检测任务中，数据集的质量直接影响模型训练阶段的泛化能力和鲁棒性。当样本不足时，模型容易发生过拟合，降低实际应用效果。为了解决这一问题，本研究引入数据增强技术，如图3-3（b-f）所示，通过旋转变换、平移变换、尺度缩放变换、错切变换和颜色变换等方法，提升样本数量并增加数据集的多样性，从而有效缓解过拟合问题，并提高模型的泛化能力和鲁棒性。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图3-3 对原始图像进行数据增强的结果}
+\end{figure}
+
+
+\section{选用和改进模型}
+
+
+\subsection{YOLOv5模型}
+
+YOLOv5是一种基于深度神经网络的单阶段目标检测算法，能够对输入图像中的目标进行精确定位，同时预测目标的类别及位置信息。YOLOv5模型具有高检测精度、检测速度快和轻量级的显著特征。YOLOv5的整体架构由Input、Backbone、Neck和Head四部分组成，如图3-4所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图3-4 YOLOv5模型网络框架}
+\end{figure}
+
+（1）Input：进行三个初始锚框的设置、对数据集图像进行增强和输入图像尺寸的自适应缩放。
+
+（2）Backbone：由CBS、C3和SPPF三个部分组成，提取图像的特征信息。CBS模块对图像数据进行下采样操作，提取图像的关键信息的同时降低计算机量和存储消耗。C3模块进行图像特征的提取和融合，丰富特征的语义信息，增强网络结构的学习能力。SPPF模块（快速空间金字塔池化层），通过池化和特征融合方式能够处理不同分辨率的输入特征、增大感受野以及能够提取图像的整体特征。SPPF模块相对比SPP模块（空间金字塔池化层），在实现相同效果的情况下，实现计算速度的提升和内存占用的减少。
+
+（3）Neck：通过FPN和PAN两种结构的结合，能够有效提升网络结构多尺度特征的融合能力。FPN结构通过自顶而下的路径丰富高层特征的语义信息,PAN结构通过自底而上的路径补充底层特征的细节信息，提升网络结构检测精度和鲁棒性。
+
+（4）Head：通过三个不同的检测头生成80×80、40×40和20×20三种尺寸的特征网格图，对应的每个网格中包括目标的类别、位置信息。
+
+YOLOv5模型为满足不同场景中的使用需求，根据网络的深度和宽度由小到大排序，划分为YOLOv5n、YOLOv5s、YOLOv5l、YOLOv5m和YOLOv5x[17]。通常情况下，随着网络的深度和宽度不断增加，对应型号的模型检测性能会不断提升，但同时也会导致网络结构变得更加复杂以及检测速度降低，考虑到在农业病虫害目标检测能够进行实时检测并保持检测精确度，本研究选用YOLOv5s作为基准模型。
+
+
+\subsection{CBAM注意力机制模块（Convolutional Block Attention Module）}
+
+原始YOLOv5模型在处理复杂数据集时，由于图像中的目标可能存在细节模糊等问题，而模型在卷积操作中对所有特征赋予相同的重要性，导致难以准确提取目标的关键特征信息。为解决这一问题，引入注意力机制成为一种高效的优化策略。注意力机制能够在特征提取过程中动态调整权重，赋予关键目标区域更高的关注度，从而显著提升模型对复杂场景下目标的识别能力。CBAM注意力机制模块（Convolutional Block Attention Module）是由Sanghyun Woo[18]于2018年提出的一种简洁而高效的前馈卷积神经网络注意力模块。
+
+CBAM注意力机制模块由通道注意力模块和空间注意力模块两个关键子模块组成，能够增强模型对关键特征的关注，并抑制图像中不相关特征的干扰，从而提升模型的检测能力，其结构如图3-5所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图3-5 CBAM注意力机制模块结构}
+\end{figure}
+
+通道注意力模块结构如图3-6所示。该模块对大小为H×W×C的输入特征信息图F进行全局最大池化和全局平均池化操作，分别得到两个重要特征。随后，这两个特征经过共享的多层感知机（MLP）进行融合，生成两个特征向量。将这两个特征向量进行相乘相加操作后，再经过Sigmoid激活函数处理得到所需要的通道注意特征图,计算如公式（3-6）所示。
+
+在公式（3-6）中，σ表示Sigmoid激活函数；MaxPool和AvgPool分别表示全局最大池化操作全局平均池化操作；MLP表示共享的多层感知机操作。
+
+算出通道注意力特征图后，需要将其与通道注意力模块中的输入特征图F进行相乘得到空间注意力模块中的输入特征,其计算方式如公式（3-7）所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图3-6 通道注意力模块结构}
+\end{figure}
+
+空间注意力模块的结构如图3-7所示。该模块将计算得到的新特征图进行全局最大池化操作和全局平均池化操作，得到两种不同的空间分布特征。将这两种特征进行拼接操作，并将形成的新特征图传递到卷积层进行融合。最后使用Sigmoid激活函数得到空间注意力特征图，其计算方式如公式（3-8）所示。
+
+在公式（3-8）中，表示为大小为7×7的卷积层操作。
+
+计算出通道注意力特征图后，需要将其与空间注意力模块中的输入特征图进行相乘得到最终特征，其计算方式如公式（3-9）所示。该特征融合了输入特征图的通道和空间注意力信息，用于后续网络操作。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图3-7 空间注意力模块结构}
+\end{figure}
+
+
+\subsection{高分辨率特征整合层（P2）}
+
+由于农业病虫害数据集中，病理区域在图像中像素占比偏小，在YOLOv5模型中经过多次下采样后，其特征信息会明显丢失。此外，随着网络层数的逐渐加深，小目标的特征信息和位置信息不断减弱，给目标的精确定位带来困难[19]，进而影响模型的检测性能。在YOLOv5模型中，高层特征图通常包含更多的语义信息和全局特征，但由于空间分辨率较低，难以保留目标样本的细节特征。相反，浅层特征图保留了更多目标样本的细节特征，但语义信息较少[20]。因此，为了使YOLOv5模型更好地适应病理区域占比较小的场景，在模型中添加了高分辨率特征整合层（P2），以融合高层特征图与浅层特征图的信息，从而使模型在保留较多语义信息的同时，增强对目标细节的敏感度，提升病虫害的检测效果。在YOLOv5模型中引入高分辨率特征整合层（P2）后的结构如图3-8所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图3-8 引入高分辨率特征整合层（P2）后的YOLOv5模型结构}
+\end{figure}
+
+原始YOLOv5模型在输出图像尺寸为640×640时，第2层C3操作后的特征图分辨率为160×160，而第17层C3操作后的特征图分辨率为80×80，导致这两个特征图不能直接融合。为解决这一问题，修改了原始YOLOv5网络结构的第17层，增加一次上采样操作，将该层输出的特征图分辨率提升至160×160。这样，第2层和第17层的特征图可以拼接在一起。在第21层C3操作后，融合了高层特征图与浅层特征图的信息，从而输出包含更多细节特征的特征图。
+
+同时发现添加高分辨率特征整合层（P2）后的YOLOv5模型，其网络层数为30层，相对比原始YOLOv5模型增加了7层。
+
+
+\subsection{Ghost模块}
+
+在YOLOv5模型中，传统卷积虽然能够提取丰富的图像特征信息，但也会引入大量参数和计算量，从而影响模型的推理速度。华为诺亚方舟实验室提出的GhostNet[21]是一种轻量化网络，通过将传统卷积过程划分为两部分操作，显著降低模型的参数规模和计算开销。
+
+在传统卷积过程中，假设输入的图像特征为,拥有通道数为，每个通道对应的图像特征的长和宽分别为和，生成通道数量为的特征图的传统卷积操作对如公式（3-10）所示。
+
+在公式（3-10）中，输出特征为,具有通道数为, 每个通道对应的图像特征的长和宽分别为和；表示为卷积操作；表示为传统卷积中的卷积核集合,为每个卷积核的大小；为偏置参数。传统卷积过程的浮点运算数量（FLOPs）的计算如公式（3-11）所示。
+
+Ghost模型如图3-9所示，相对比传统卷积操作，其首先使用卷积核大小为1×1进行卷积操作，生成通道数量为m（满足m<n）的精炼输入特征图，对生成的m个精炼输入特征图中的每一个特征图，依次进行线性变换，计算如公式（3-12）所示，得到通道数量为s-1的新的精炼特征图。将两次操作生成的精炼特征图进行拼接，保留原始图像的关键信息，拼接操作后生成通道数量为m×s的特征图，Ghost模型所需要的浮点运算数量（FLOPs）的计算如公式（3-13）所示。
+
+使用Ghost模型与传统卷积的理论加速比如公式（3-14）所示。
+
+模型的压缩比如公式（3-15）所示。
+
+通过公式（3-14）和（3-15）可以看出，Ghost模型与传统卷积的理论加速比等于相对应的模型的压缩比，表明在原始YOLOv5模型中引入Ghost模型可以有效减小模型的参数量和计算开销，同时保持模型的检测性能，从而实现轻量化设计。具体实施过程中，在添加高分辨率特征整合层（P2）后的YOLOv5模型中，部分C3模块被C3Ghost模块替换，部分CBS模块被GhostConv模块替换，分别将模型第24层和第27层的C3模块替换为C3Ghost模块，第22层和第25层的CBS模块替换为GhostConv模块，具体结构图见图3-10。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图3-9 Ghost模型结构}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图3-10 引入Ghost模块优化后的网络结构}
+\end{figure}
+
+
+\subsection{YOLO-PestNet模型}
+
+基于YOLOv5s模型具有高检测精度和轻量化的显著优势，本研究提出YOLO-PestNet模型，使用于农业病虫害智能识别中。该模型主要有三处改进：引入CBAM注意力机制，增强模型对关键特征的关注度并且抑制不相干特征的影响，根据特征的每个像素的重要度，合理分配相应的权重值；引入高分辨率特征整合层（P2），提升模型病理区域占比较小场景的适应度，提升农业病虫害的检测性能；引入Ghost模块，能够保持模型保持原有检测性能的同时降低模型的参数量和计算开销。YOLO-PestNet模型的整体网络结构如图3-11所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图3-11 YOLO-PestNet模型网络框架}
+\end{figure}
+
+
+\section{模型测试}
+
+
+\subsection{模型评估指标}
+
+本研究主要使用精确率（P）、召回率（R）、平均准确度（mAP）、浮点运算次数（FLOPs）和FPS来评估模型训练的性能，计算公式如下所示:
+
+在公式（3-16）和（3-17）中，表示实际目标类别为正例且被正确检测为正例的数量；表示表示实际目标类别为负例但被错误检测为正例的数量；表示实际目标类别是负例但被错误检测为正例的数量。公式（3-19）中，表示精确度和召回率所构成的P-R曲线下的近似面积，表示 IOU（Intersection over Union）阈值为0.5时，多类别任务中的平均值。公式（3-20）中，、和分别表示为输入特征图的通道数、输出特征图的通道数和卷积核大小；和分别表示为输出特征图的宽度和高度。
+
+
+\subsection{实验环境}
+
+在本研究的YOLOv5模型实验中，实验平台配置如表3-2所示，包括AMD Ryzen 9 7950X处理器、64GB内存，以及配备24GB显存的NVIDIA GeForce RTX 4090 D显卡。编译环境包括Torch 2.5.1、Torchvision 0.20.1、Python 3.9.6和CUDA 11.8。
+
+考虑到本研究使用的PlantVillage for Object Detection YOLO数据集包含大量图像，为了确保YOLOv5模型能够充分训练，采用较小的初始学习率和最终学习率因子，分别设置初始学习率（lr0）为0.0001，最终学习率因子（lrf）为0.001。同时，优化器选择SGD，动量参数设为0.937，权重衰减为0.0005，批次大小（batch size）为32，总训练轮次（epochs）为300。YOLOv5模型的主要训练参数如表3-3所示。
+
+表3-2 实验中主要的操作环境
+
+表3-3 YOLOv5模型训练的主要参数设置
+
+
+\subsection{YOLOv5s模型与YOLO-PestNet模型的性能分析}
+
+PlantVillage for Object Detection YOLO数据集对YOLO-PestNet模型进行了评估。结果由表3-4所示，YOLO-PestNet模型相对于基准YOLOv5s模型，P、R和mAP分别提高了3.9\%、5.3\%和2.8\%，Parameters下降了0.1M。
+
+表3-4 YOLOv5s模型与YOLO-PestNet模型的结果的对比
+
+如图3-12所示，当目标样本的病虫害状态与其他样本相似时，YOLOv5s模型容易出现误判。例如，在图3-12（a）中，苹果疮痂病（APAS）和桃子细菌性斑点病（PCBS）属于不同农作物，但它们在早期的病态表现上相似，尤其是绿色的桃子叶和苹果叶，以及病变区域呈现小块褐色斑点，导致模型容易混淆这两类农业病虫害，进而影响检测精度。在图3-12（d）中，玉米褐斑病（CCGL）和玉米叶枯病（CNLB）为同一农作物且颜色非常相似，尽管它们在形态上有所不同（玉米褐斑病通常表现为细长条形病斑，而玉米叶枯病则为宽大、不规则的病斑），YOLOv5s模型仍未能有效区分这两者，导致误判。面对农业病虫害小样本时，例如图3-12（b）和（c）中的葡萄健康叶片（GRHE）与马铃薯健康叶片（PTHE），由于YOLOv5s模型难以学习这些类别的特征，导致漏检现象。对于病理区域占比较小的情况，如图3-12（c）中的甜椒细菌性斑点病（PBBP），YOLOv5s模型也容易出现漏检。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图3-12 YOLOv5s模型和YOLO-PestNet模型检测结果}
+\end{figure}
+
+而本研究提出的YOLO-PestNet模型能够有效地适应这些场景，且由结果综合所示，可以发现YOLO-PestNet模型在目标检测结果具有良好的置信度。基于YOLOv5s模型引入CBAM注意力机制、采用高分辨率特征融合层（P2）和集成Ghost模块三个增强点，模型能够有效地适应样本量的变化和对目标特征的有效提取，从而使得模型能够合理地区分农业病虫害类别并准确检测，从而提升模型的准确性和降低模型的漏检率。
+
+
+\subsection{CBAM注意力机制分析}
+
+为了评估CBAM（Convolutional Block Attention Module）注意力机制的有效性，本研究在基准YOLOv5s模型中分别引入SE（Squeeze-and-Excitation）和ECA（Efficient Channel Attention）注意力机制模块进行实验对比。
+
+SE注意力机制模块属于通道注意力（Channel Attention），其核心目标是在神经网络的特征提取过程中，针对不同通道在特征图中的权重分配差异，优化信息表达，减少重要特征的损失，从而提升模型的特征表示能力[22]。ECA注意力机制模块一种轻量级的通道注意力机制，能够在避免降维带来信息损失的同时，有效捕获跨通道交互，从而增强目标的基本特征提取能力。[23]
+
+由表3-5所示，添加 CBAM 模块后，mAP达到最高值96.0\%，相比添加 SE 模块和 ECA 模块，分别提升了0.7\%和0.1\%。同时，值得注意的是，CBAM 模块并未显著增加Weights、FLOPs和Parameters，且推理（Inference）速度保持不变。综合实验结果表明，CBAM 注意力机制模块在保持 YOLOv5s轻量化、高检测速度和低参数量的同时，能够有效提升其检测性能。
+
+表3-5 不同注意力机制对比结果
+
+续表3-5
+
+
+\subsection{Ghost模块分析}
+
+为了评估Ghost模块在优化YOLOv5s模型网络结构的有效性，本研究分别使用GC（Global Context）模块和RVB（RepViT Block）模块对YOLOv5s模型网络结构进行优化，并进行实验对比。
+
+GC模块通过计算查询位置与其他位置之间的成对关系生成注意力图，根据该图对所有位置的特征进行加权聚合，捕获全局上下文信息；通过将注意力图的权重映射到特征图的通道维度，进行通道间依赖关系的转换，将全局上下文特征与通道间依赖转换特征融合，输出优化后的特征。[24]RVB模块是一种新的网络模块，其结合轻量级视觉变换器（ViTs）和卷积神经网络（CNN）的优势，利用视觉变换器的全局建模能力和卷积神经网络的局部特征提取能力，提高网络的解码效率和性能。[25]
+
+由表3-6所示结果，使用Ghost模块优化YOLOv5s模型后，mAP达到了95.8\%，较基准YOLOv5s模型提升了0.5\%。而采用GC模型和RVB模型后，mAP值相较于基准YOLOv5s模型分别下降了1.0\%和0.8\%。此外，使用Ghost模块后，模型的Weights、FLOPs和Parameters均显著减少，较基准YOLOv5s模型分别下降了0.4MB、0.7G和0.2M，同时推理（Inference）速度保持不变。综合实验结果表明，Ghost模块不仅能有效减小模型的参数量和计算开销，还能显著提升模型的检测性能。
+
+表3-6 不同优化模块对比结果
+
+
+\subsection{消融实验}
+
+本研究通过消融实验验证各优化模块的有效性。通过在基准YOLOv5s模型中依次加入CBAM注意力机制、高分辨率特征整合层（P2）和Ghost模块，构建多个改进模型，并在相同的实验环境和测试数据集上进行对比测试，实验结果如表3-7所示。
+
+表3-7 消融实验结果
+
+由表3-7可知，基准YOLOv5s模型的P、R、mAP、Weights、FLOPs、Parameters和Inference分别为90.6\%、90.6\%、95.3\%、13.9MB、16.1G、7.1M和1.1ms。基准YOLOv5s模型具有轻量级特征和较优的实时农业病虫害检测能力，虽然检测性能仍有不足，但已基本满足农业病虫害智能识别系统的初步部署要求。
+
+（1）引入CBAM注意力机制模块后，与基准YOLOv5s模型对比，虽然P略有下降，降低了1.1\%，但R和mAP均显著提升，分别提高了2.0\%和0.7\%。同时，Weights、FLOPs、Parameters和Inference均无显著变化，表明CBAM注意力机制模块有效增强了模型对关键特征的关注，抑制了无关信息，从而提升了特征提取能力，而且未显著增加模型的参数量和计算开销。
+
+（2）引入高分辨率特征整合层（P2）后，与基准YOLOv5s模型对比，P、R和mAP均有显著提升，分别提高了1.3\%、3.7\%和1.0\%。然而，Weights、FLOPs、Parameters和Inference均明显增大，分别增加了1.0MB、3.1G、0.2M和0.6ms。这表明，P2模块能够有效提取更细节的图像特征，提升模型在病理区域占比较小的场景中的适应性，从而提高了检测性能。但由于增加了网络层，模型的复杂度、参数量和计算开销也相应增大。
+
+（3）引入Ghost模块，与基准YOLOv5s模型对比，P略有下降，降低了1.0\%，但R和mAP均有所提升，分别增加了2.1\%和0.5\%，同时Weights、FLOPs和Parameters下降明显，降低了0.4MB、0.7G和0.2M和Inference均无变化。说明Ghost模块能够保持模型检测性能的同时，显著降低模型的参数量和计算开销。
+
+通过将三个模块依次进行组合，可以发现将入CBAM注意力机制、高分辨率特征整合层（P2）和Ghost模块都添加到基准YOLOv5s模型中，得到模型的最佳检测性能，P、R和mAP分别为94.5\%、95.9\%和98.1\%，相对于基准YOLOv5s模型，分别提升了3.9\%、5.3\%和2.8\%。因为Ghost模块和CBAM注意力机制模块的引入，使得原本只添加P2模型的参数和计算开销有所下降，此时Weights和FLOPs分别为14.5MB和17.9G，相对于基准YOLOv5s模型，分别提升了0.6MB和1.8G,同时Parameters为7.0M，降低了0.1M。但是相对于只添加P2的模型，分别下降了0.4MB、1.3G和0.3M。
+
+总的来说，通过三个模块的结合显著地提升了YOLO-PestNet模型的检测性能，能够轻松地部署到移动设备中并保持实现轻量化和实时进行高检测精度的农业病虫害检测。
+
+
+\subsection{不同目标检测模型对比}
+
+本研究选取YOLO系列中的经典模型YOLOv3-tiny和目前最前沿两个YOLO系统的模型YOLOv10和YOLOv11，并选取其特定型号进行实验，分别为YOLOv10s、YOLOv11n和YOLOv11s。以及选取当前农业病虫害目标检测领域的前沿模型YOLO-CRD进行对比实验。所有实验均基于PlantVillage for Object Detection YOLO数据集，并在相同的实验参数下进行，实验结果如表3-8所示。
+
+表3-8 不同目标检测模型检测结果
+
+由表3-8可知，在所有模型中，YOLOv3-tiny虽然具有轻量级特征和较低的计算开销（Weights为16.7MB、FLOPs为13G、Inference为0.7ms），但由于其F1得分和mAP均低于50\%，即使满足实时性和轻量化要求，检测性能仍然较差，无法满足农业病虫害检测的精确性需求。
+
+对于YOLOv10s模型，其整体表现不及基准YOLOv5s模型。相较之下，YOLOv5s模型的F1和mAP分别高出10.1\%和5.5\%，同时Weights、FLOPs和Parameters分别减少了1.9MB、8.5G和1.0M。可见，尽管YOLOv10s属于较为先进的YOLO系列模型，但整体性能仍不及YOLOv5s，因而不适用于农业病虫害检测任务。
+
+YOLOv11n模型虽然展现出最佳的轻量级特性（Weights为5.3MB、FLOPs为6.4G、Parameters为2.6M、Inference为0.6ms），但其F1得分和mAP略低于基准YOLOv5s，分别低1.9\%和0.7\%。
+
+对于YOLOv11s模型，其与YOLOv5s为同型号系列，但模型复杂度、参数量和计算开销均显著增加（Weights为18.3MB、FLOPs为21.6G、Parameters为9.4M、Inference为2.5ms）。不过，该模型的F1得分和mAP也大幅提升，分别达到93.9\%和97.8\%，整体性能优异。如果设备对模型的轻量化、参数量和实时性要求不严格，YOLOv11s仍然具备优势。
+
+在农业病虫害目标检测领域的前沿模型YOLO-CRD同样表现出色，其F1和mAP分别达到95.0\%和97.6\%。然而，该模型的复杂度和参数量为所有模型中最高，Weights达25.8MB，Parameters为13.3M。
+
+本研究提出的YOLO-PestNet模型在所有模型中表现最佳，其F1得分最高，达到95.2\%，分别比YOLOv3-tiny、YOLOv5s、YOLOv10s、YOLOv11n、YOLOv11s和YOLO-CRD高出45.5\%、4.6\%、14.7\%、6.5\%、1.3\%和0.2\%。此外，YOLO-PestNet的mAP同样为最高，达到98.1\%，分别比YOLOv3-tiny、YOLOv5s、YOLOv10s、YOLOv11n、YOLOv11s和YOLO-CRD高出50.2\%、2.8\%、8.3\%、3.5\%、0.3\%和0.5\%。YOLO-PestNet的Weights、FLOPs与基准YOLOv5s相近，Parameters略低，Inference时间为1.6ms，能够在保持轻量化特性的同时，实现农业病虫害检测的高精度和实时性。
+
+
+\chapter{基于深度神经网络的农业病虫害智能识别系统设计}
+
+
+\section{需求分析}
+
+针对目前农户对于农业病虫害类别识别困难，以及不能合理选取相应的防治措施的问题。本研究需要建立一套能够实时进行农业病虫害高精度的识别和提供病虫害的介绍和防治方法，以及提供农户环境中的温湿度和光照数据进行全面参考，从而帮助农户可以自主指定最佳的农业病虫害防治策略。为实现上述功能，需要进行的具体工作如下：
+
+（1）建立基于深度学习网络的农业病虫害识别系统，能够支持图片上传、图片文件夹上传、视频传输和ESP32-CAM开发板实时传输的图像方式进行农业病虫害识别，确保使用场景的灵活性。能够快速和准确的识别农业病虫害类别，并提供相应农业病虫害类别的介绍和科学的防治方法。
+
+（2）选用STM32F103C8T6开发板与温湿度传感器（SHT40）和光敏传感器进行协同工作，实现温湿度和光照数据的采集和传输，并通过OLED显示屏实时显示温湿度和光照数据。利用ESP32-CAM开发板通过串口传输协议实时接收STM32F103C8T6开发板的温湿度和光照数据，以及利用自身的摄像头模块去采集环境图像数据，通过WIFI通信协议实现将环境的温湿度、光照和图像数据传输到基于深度学习网络的农业病虫害识别系统中。
+
+（3）确保硬件设备能够进行稳定工作，选用可充电式电池组进行供电，实现硬件设备能够长期进行工作。
+
+（4）支持对历史的温湿度、光照数据和农业病虫害检测结果数据的存储功能，帮助农户能够掌握农作物生长环境的状况。
+
+
+\section{可行性分析}
+
+通过合理地建立一套基于深度学习网络的农业病虫害识别系统，来帮助农户进行农业病虫害的识别和防治，具体设计分为两部分：
+
+（1）硬件设计中，选用最小系统开发板STM32F103C8T6配合温湿度传感器（SHT40）、光敏传感器进行环境温湿度、光照数据的采集，并在OLED显示屏中实时显示温湿度、光照数据。图像采集和数据传输工作使用高性能低功耗开发板ESP32-CAM。整套硬件设备选用可充电式的电池组进行供电，实现长期稳定运行。整套硬件设备设计方案成本适中且稳定可靠。
+
+（2）软件设计中，所设计的基于深度学习网络的农业病虫害识别系统选用本研究提出的YOLO-PestNet模型，能够满足实时精度的农业病虫害类别的识别。系统界面由开源的Pyside2设计，整体界面符合人机交互原则，能够支持图片上传、图片文件夹上传、视频传输和摄像头实时传输的图像方式进行农业病虫害识别，检测的结果展示清晰和能够及时提供农业病虫害类别的介绍和防治方法，能够实时将硬件设备传输的温湿度、光照数据进行显示。系统能够满足使用的方便性，以及满足对农业生产中病虫害类别的快速识别和防治方法的实际需求。
+
+
+\section{系统的硬件设计}
+
+硬件实物图由图4-1所示，为农业病虫害智能识别系统中所使用到硬件设备，主要由STM32F103C8T6和ESP32-CAM两个开发板组成，能够配合温湿度传感器（SHT40）、光敏传感器和摄像头进行实时地采集和传输环境温湿度数据、光照数据和图像数据。同时该硬件设备配备可充电的电池组，能够供给硬件设备长期且稳定地工作
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图4-1 硬件实物图}
+\end{figure}
+
+硬件设备所需要的材料如表4-1所示。
+
+表4-1 所需的硬件材料
+
+
+\subsection{温湿度和光照数据采集}
+
+硬件设备温湿度和光照数据采集工作流程如图4-2所示。
+
+（1）温湿度数据采集：
+
+I2C1和GPIOB端口时钟使能后，PB6作为SCL，PB7作为SDA，配置为复用开漏模式，速率10MHz。I2C参数设定完成后，使能外设。SCL高电平时SDA拉低，产生起始信号，等待EV5事件后发送设备地址（0x44<<1）和写入指令0xFD。SHT40接收后进行测量，延时10ms。测量完成后，单片机发送设备地址((0x44<<1)+1)，读回温湿度数据，存入设置好的temp和humi数组。
+
+（2）光照数据采集：
+
+ADC和GPIOB端口时钟使能，PB1设为模拟输入模式，速率50MHz。配置ADC参数，校准后使能。通道9作为输入，设定采样时间55.5个时钟周期。启动软件转换，等待转换完成，读取数值并转换为光照度。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图4-2 温湿度和光照传感器采集数据工作流程}
+\end{figure}
+
+
+\subsection{温湿度和光照数据传输}
+
+硬件设备温湿度和光照数据传输工作流程如图4-3所示。STM32F10C8T6开发板启动后，与连接的传感器模块交互，采集温湿度和光照数据。系统对数据进行阈值判断，若温度、湿度或光照超出设定范围，并点亮对应颜色的LED指示灯。例如，温度过高时LED红灯亮起，湿度过高时LED蓝灯亮起，光照过低时LED点亮以进行补光。
+
+采集到的数据通过串口传输至ESP32-CAM开发板。ESP32-CAM连接WiFi并配置端口，其中端口8080用于传输温湿度和光照数据，端口9090用于传输摄像头图像。摄像头初始化后，采集实时图像，并通过WiFi协议将温湿度、光照及摄像头图像数据发送至本地服务器。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图4-3 数据传输过程}
+\end{figure}
+
+
+\section{系统的软件设计}
+
+基于深度神经网络的农业病虫害智能识别系统V1.0界面如图4-4所示。设计的系统界面具备多项核心功能。其主要功能包括实时显示温湿度和光照数据并支持对应的历史数据查询，可以通过界面选择“打开图片”、“打开图片文件夹”、“打开视频”或“打开摄像头”，以进行图像的目标检测。
+
+“打开图片”、“打开视频”和“打开摄像头”过程中生成的检测结果会实时展示在“YOLO 目标检测结果”框中。
+
+针对于“打开图片”，当检测到相应农业病虫害时候，在“农业病虫害检测结果介绍”中显示农业病虫害类别，以及其的介绍和防治方法。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图4-4 基于深度神经网络的农业病虫害智能识别系统V1.0界面}
+\end{figure}
+
+
+\subsection{软件系统登录与注册界面}
+
+由图4-5所示，系统启动时，显示包含账号和密码输入框、选择“登录”或“注册”按钮的登录/注册界面。
+
+当选择登录时，用户通过电脑的键盘输入账号和密码后，点击登录按钮提交信息。系统会验证输入的账号和密码是否正确，若正确则进入系统界面；若错误，则显示“用户名或密码输入错误”的提示，并重新显示输入框，允许用户再次输入账号和密码，直至验证成功为止。
+
+当选择注册时，用户可以通过电脑的键盘输入账号和密码后，点击注册按钮提交信息，系统显示“注册成功”的提示，同时不管选择“注册”或“返回登录”的按钮，都会返回到系统登录/注册界面。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图4-5 登录注册功能结构图}
+\end{figure}
+
+
+\subsection{软件系统控制界面}
+
+由图4-6所示，设计的基于深度神经网络的农业病虫害智能识别系统具备多项核心功能。其主要功能包括实时显示温湿度和光照数据并支持对应的历史数据查询，可以通过界面选择“打开图片”、“打开图片文件夹”、“打开视频”或“打开摄像头”，以进行图像的目标检测。具体设计的功能如下：
+
+（1）温湿度和光照数据显示模块。系统开启采集温湿度和光照数据进程，用来不断接收硬件设备发送过来的温湿度和光照数据。当接收到的数据不为空时将温湿度和光照数据进行显示和记录，同时判断当前时刻数据是否超过设定的阈值。如果超过阈值，则可以记录温度高、湿度高、光照低中的一种或多种状态；反之，则可以记录温度正常、湿度正常、光照正常中的一种或多种状态。保存记录当前时间、温湿度和光照数据及其对应状态。
+
+（2）摄像头图像采集模块。系统会不断接收ESP32-CAM发送过来的环境图像数据，当使用“打开摄像头”进行图像的目标检测功能时，系统会不断对摄像头采集到的每帧图像进行目标检测，然后将目标检测后的图像实时显示到UI界面中。同时系统会将目标检测后的每帧图片进行保存，当结束使用“打开摄像头”进行图像的目标检测功能时，会将这些图像帧拼接为图像视频进行保存。
+
+（3）选择图片模块。用户可以从本地文件中选择一张图片进行目标检测，检测结果会实时显示到UI界面中和提供检测到的农业病虫害类别介绍和防治方法内容，并将得到的检测到的农业病虫害类别介绍和防治方法内容、序号、目标类别、置信度、目标位置信息显示到YOLO目标检测结果记录表中。同时目标检测的图片也会进行保存。
+
+（4）选择图片文件夹模块。用户可以从本地文件中选择一个包含图像的文件夹，系统会将文件夹的图像依次进行目标检测，将得到的检测到的农业病虫害类别介绍和防治方法内容、序号、目标类别、置信度、目标位置信息显示到YOLO目标检测结果记录表中。同时每张目标检测后的图像会保存到同一个文件夹中。
+
+（5）打开视频模块。用户可以从本地文件中选择一个视频文件，系统会图像的每帧进行目标检测，将目标检测后的图像实时显示到UI界面中。同时系统会将目标检测后的每帧图像进行保存，当视频播放完毕后，会将这些图像帧拼接为图像视频进行保存。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图4-6 软件系统控制图}
+\end{figure}
+
+
+\chapter{系统测试}
+
+
+\section{系统的硬件功能测试}
+
+
+\subsection{温湿度和光照数据显示}
+
+由图5-1所示，当打开电源开关后，硬件系统会自动采集温湿度数据，在OLED显示，可以发现此时的温湿度和光照数据分别为25.63°C、54.36\%和43lx，同时旁边的字母“N”，代表对应的数据当前处于正常状态。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图5-1 温湿度和光照数据显示}
+\end{figure}
+
+
+\subsection{温湿度和光照数据超过阈值情况}
+
+
+\begin{figure}[htbp]
+\centering
+\caption{由图5-2所示，当温湿度和光照分别超过设定阈值时，会出现警报：}
+\end{figure}
+
+当温度高于35°C时，如OLED屏显示当前温度为37.70°C，同时字母“H”，表示此时环境温度过高，并且伴随着LED显示红灯状态。
+
+当湿度高于85\%时，如OLED显示当前湿度为95.05\%，同时字母“H”，表示此时环境湿度过高，并且伴随着LED显示蓝灯状态。
+
+当光照低于35lx时，如OLED显示当前湿度为23lx，同时字母“L”，表示此时环境光照强度过低，并且伴随着LED显示白灯状态。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图5-2 温湿度和光照数据超过阈值情况}
+\end{figure}
+
+
+\section{系统的软件功能测试}
+
+
+\subsection{运行环境}
+
+系统运行的主要操作环境如表5-1所示，包括Windows 11 64位操作系统、AMD Ryzen 9 7945HX处理器、16GB内存，以及配备8GB显存的NVIDIA GeForce RTX 4060 Laptop显卡。编译环境包括Torch 2.5.1、Torchvision 0.20.1、Python 3.9.6和CUDA 11.8。
+
+表5-1 系统运行主要的操作环境
+
+
+\subsection{软件系统登录与注册}
+
+由图5-3所示，系统登陆/注册界面中有“用户名”和“密码”输入，为用户注册的账号和密码。当输入的“用户名”或者“密码”输入错误时，会提示重新输入并登录，如图5-4所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图5-3 登录界面}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图5-4 “用户名”或者“密码”输入错误}
+\end{figure}
+
+当用户没有相对应的“用户名”或者“密码”时，可以选择“注册”按钮，进入界面如图5-5所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图5-5 注册界面}
+\end{figure}
+
+进入“注册”界面后，可以输入相应的“用户名”或者“密码”进行注册。同时点击“注册”或者“返回登陆”按钮，都会返回到登录界面。
+
+假设注册的“用户名”为“1”，密码为“2”，得到结果如图5-6所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图5-6 注册“用户名”和“密码”成功}
+\end{figure}
+
+
+\subsection{系统采集温湿度和光照数据并显示}
+
+硬件设备启动后，系统将实时接收其发送过来的温湿度和光照数据，并显示，如图5-7所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图5-7 实时采集温湿度和光照数据并进行历史记录}
+\end{figure}
+
+由图5-7所示，系统实时采集温湿度和光照数据，并且把每个时间节点采集到的温湿度和光照数据显示到记录表中进行历史查询。
+
+
+\subsection{进行图片目标检测}
+
+使用“打开图片”，可以在本地文件夹中选择一张图片，得到结果如图5-8所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图5-8 目标检测结果}
+\end{figure}
+
+如图5-8所示，系统在对图片进行目标检测后，检测结果将实时显示在界面中，同时将检测到的“目标类别”、“置信度”和“坐标位置”等信息保存至对应的记录表中。此外，在“农业病虫害检测结果介绍”部分，将显示农业病虫害的类别（如苹果疮痂病，置信度为85.84\%）以及该病虫害的详细介绍和防治方法。
+
+
+\subsection{选择图片文件夹进行目标检测}
+
+从38个类别的病虫害中各选取一张图像，并将其放入文件夹中进行测试，如图5-9所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图5-9 文件夹中的测试图像}
+\end{figure}
+
+点击“打开文件夹”后，在本地选择一个包含图像的文件夹，系统将依次对文件夹内的所有图像进行目标检测。得到结果如图5-10所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图5-10 测试图像目标检测结果}
+\end{figure}
+
+如图5-10（a）所示，系统成功对文件夹中的测试图像进行目标检测，并依次保存检测结果；如图5-10（b）所示，由于一次性处理多张图像，检测结果需要快速更新，可能导致无法及时查看。此时，可以通过查询测试结果表格来获取详细信息。
+
+
+\subsection{选择视频文件进行目标检测}
+
+点击“打开视频”，可以上传一个本地的视频，然后进行目标检测，检测的结果会实时显示，结果如图5-11所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图5-11 对测试视频实时进行目标检测并显示}
+\end{figure}
+
+如图5-11所示，选择视频后，系统将对其进行实时目标检测。检测结果会在系统界面中实时显示，同时检测完成的视频结果也会存储到本地文件夹中，存储文件的名称与原视频文件名保持一致，便于管理和查找。
+
+
+\subsection{实时采集图像并进行目标检测}
+
+点击“打开摄像头”，会实时接收硬件设备采集到的图像数据并进行目标检测并实时显示，结果如图5-12所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图5-12 实时采集环境图像进行目标检测并显示}
+\end{figure}
+
+如图5-12所示，打开摄像头后，会实时采集环境图像并进行目标检测，然后进行显示。同时点击“停止摄像头”后，会将这个过程采集到的图像视频进行保存。
+
+
+\subsection{保存记录表中的数据}
+
+系统运行过程的 “温湿度和光照数据记录表”和“YOLO检测结果记录表”的数据也会实时地保存到本地的文件中，结果如图5-13所示。
+
+
+\begin{figure}[htbp]
+\centering
+\caption{图5-13 数据保存结果}
+\end{figure}
+
+
+\chapter{总结与展望}
+
+
+\section{结论}
+
+本研究面向农业病虫害的智能识别，通过结合深度学习的神经网络模型运用到病虫害智能诊断领域，并提高诊断的精度。整体的结论如下：
+
+（1）本研究基于YOLOv5s模型，结合PlantVillage for Object Detection YOLO数据集，提出一种改进的目标检测模型YOLO-PestNet模型。通过实验结果表明，基准YOLOv5s模型的平均精度（mAP）为95.3\%。本研究提出YOLO-PestNet模型在基准YOLOv5s模型上进行了三处改进：①CBAM注意力机制模块有效增强了模型对关键特征的关注，抑制了无关信息，从而提升了特征提取能力。与基准YOLOv5s模型对比，平均精度（mAP）提升0.7\%，同时未显著增加模型的参数量和计算开销；②引入高分辨率特征整合层（P2）后，能够有效提取更细节的图像特征，提升模型在病理区域占比较小的场景中的适应性，从而提高了检测性能。与基准YOLOv5s模型对比，平均精度（mAP）提升1.0\%；③引入Ghost模块，能够保持模型检测性能的同时，显著降低模型的参数量和计算开销。与基准YOLOv5s模型对比，平均精度（mAP）提升0.5\%。
+
+（2）通过将入CBAM注意力机制、高分辨率特征整合层（P2）和Ghost模块三个模块进行整合，YOLO-PestNet得到模型的最佳检测性能，平均精度（mAP）为98.1\%，相对于基准YOLOv5s模型，提升了2.8\%。而Weights、FLOPs、Inference和Parameters分别为14.5MB、17.9G、1.6ms和7.0M，相对于基准YOLOv5s模型，均未显著变化。综上而言，本研究提出的YOLO-PestNet模型的检测性能，能够轻松地部署到移动设备中并保持实现轻量化和实时进行高检测精度的农业病虫害检测。
+
+（3）通过所设计的硬件设备成本适中且稳定可靠，能够有效地采集并传输环境的温湿度、光照和图像数据。
+
+（4）通过设计基于深度神经网络的农业病虫害智能识别系统，结合性能最佳的YOLO-PestNet权重文件和环境的温湿度、光照和图像数据。系统能够完成实时显示温湿度和光照数据并支持对应的历史数据查询，可以通过界面选择“打开图片”、“打开图片文件夹”、“打开视频”或“打开摄像头”，以进行图像的目标检测。通过对农业病虫害类别的快速精确的识别和给出的农业病虫害类别的介绍和防治方法，农户能够结合环境参数，从而进行合理地病虫害的防治。
+
+
+\section{展望}
+
+本研究提出的YOLO-PestNet模型虽然能够准确地分别38种不同的病虫害类别，但仍然有一些问题值得注意和需要进一步改进：
+
+（1）使用的PlantVillage for Object Detection YOLO数据集中涵盖的植物类别数量较少，仅有14种，同时相应的病虫害的类别不多，例如树莓和大豆都只有健康状态，而没有病虫害下状态的图像，使得模型在实际应用场景遇到未知的农作物病虫害类别时，出现识别错误情况。因此，未来工作种将重点研究更多植物类别和其不同病理阶段的图像。
+
+（2）在目标检测算法模型层面，需要进一步关注模型结构复杂度和轻量化的设计。虽然本研究设计的YOLO-PestNet模型较好的兼顾到轻量化和高精度的要求，但在实际使用时仍然需要较好的硬件设备支持。为此，未来应该倾向于研究更加轻量化且保持高精度的模型，确保设备能够在某些低端硬件设备中也能够适配。
+
+（3）本研究选用的ESP32-CAM开发板中的摄像头模块，其所能采集的环境图像的分辨率较低，导致在使用摄像头模块进行目标检测时，误检率显著提高，从而导致在基于深度神经网络的农业病虫害智能识别系统中不能有效地使用“打开摄像头”进行目标检测功能。所以在未来研究设计中，偏向于考虑使用功耗降低、图像分辨率高和能够快速传输图像的摄像头模块，来支持实时摄像头进行目标检测模型的功能。
+
+
+\chapter{鸣  谢}
+
+本次毕业设计和毕业论文由我的指导老师徐国保和洪忠海悉心指导下完成。从选题的确立到论文撰写的过程中，老师始终给予我耐心的教诲和无私的支持。每当我遇到难题而感到迷茫的时候，老师都会鼓励我，悉心点拨，为我提供不同方面的指导，促使我不断探索和精进。正是老师给予我前进的动力，使我能够一路披荆斩棘，克服重重困难。在此，向导师致以我最崇高的敬意和最诚挚的感谢!
+
+同时感谢秉持开源精神的工程师们，正是他们的奉献使我得以顺利完成论文中的实验内容。以及感谢汤维杰同学在硬件设计过程中给予的指导，使我的毕业设计在硬件选型与PCB设计方面得到优化，并在整体上增加一些实用性的功能。
+
+
+\begin{thebibliography}{99}
+
+\bibitem{Krizhevsky A, Sutskever I, Hinton G E. ImageNet classification with deep convolutional neural networks[J]. Communications of the ACM, 2017, 60(6): 84-90.}
+\bibitem{吴克强.基于迁移模型改进的病虫害图像分类[D].厦门大学,2020.}
+\bibitem{岳有军,李雪松,赵辉,等.基于改进VGG网络的农作物病害图像识别[J].农机化研究,2022,44(06):18-24}
+\bibitem{曹震宇.基于深度学习的番茄叶部病害识别研究[J].长江信息通信,2023,36(01):39-42.}
+\bibitem{余胜,谢莉.基于迁移学习和卷积视觉转换器的农作物病害识别研究[J].中国农机化学报,2023,44(08):191-197}
+\bibitem{吕佳,彭港建,巫若愚.多分支分组卷积的特征级联农作物病害识别[J].重庆师范大学学报(自然科学版),2024,41(05):115-128.}
+\bibitem{Mohanty S P, Hughes D P, Salathé M. Using deep learning for image-based plant disease detection[J]. Frontiers in plant science, 2016, 7: 1419.}
+\bibitem{Fujita E, Kawasaki Y, Uga H, et al. Basic investigation on a robust and practical plant diagnostic system[C]//2016 15th IEEE international conference on machine learning and applications (ICMLA). IEEE, 2016: 989-992.}
+\bibitem{Lu Y, Yi S, Zeng N, et al. Identification of rice diseases using deep convolutional neural networks[J]. Neurocomputing, 2017, 267: 378-384.}
+\bibitem{Fuentes A, Yoon S, Kim S C, et al. A robust deep-learning-based detector for real-time tomato plant diseases and pests recognition[J]. Sensors, 2017, 17(9): 2022.}
+\bibitem{Ferentinos K P. Deep learning models for plant disease detection and diagnosis[J]. Computers and electronics in agriculture, 2018, 145: 311-318.}
+\bibitem{Zhang S, Zhang S, Zhang C, et al. Cucumber leaf disease identification with global pooling dilated convolutional neural network[J]. Computers and Electronics in Agriculture, 2019, 162: 422-430.}
+\bibitem{Sujatha R, Chatterjee J M, Jhanjhi N Z, et al. Performance of deep learning vs machine learning in plant leaf disease detection[J]. Microprocessors and Microsystems, 2021, 80: 103615.}
+\bibitem{Wang B. Identification of crop diseases and insect pests based on deep learning[J]. Scientific Programming, 2022, 2022(1): 9179998.}
+\bibitem{Omer S M, Ghafoor K Z, Askar S K. Lightweight improved yolov5 model for cucumber leaf disease and pest detection based on deep learning[J]. Signal, Image and Video Processing, 2024, 18(2): 1329-1342.}
+\bibitem{Sebastian Palacio Betancur. (2024). PlantVillage for object detection YOLO [Data set]. Kaggle. https://doi.org/10.34740/KAGGLE/DS/5363572}
+\bibitem{Liu, B.; Luo, H. An Improved Yolov5 for Multi-Rotor UAV Detection. Electronics 2022, 11, 2330. https://doi.org/10.3390/electronics11152330}
+\bibitem{Woo S, Park J, Lee J Y, et al. Cbam: Convolutional block attention module[C]//Proceedings of the European conference on computer vision (ECCV). 2018: 3-19.}
+\bibitem{Shrivastava A, Gupta A. Contextual priming and feedback for faster r-cnn[C]//Computer Vision–ECCV 2016: 14th European Conference, Amsterdam, The Netherlands, October 11–14, 2016, Proceedings, Part I 14. Springer International Publishing, 2016: 330-348.}
+\bibitem{Cai Z, Fan Q, Feris R S, et al. A unified multi-scale deep convolutional neural network for fast object detection[C]//Computer Vision–ECCV 2016: 14th European Conference, Amsterdam, The Netherlands, October 11–14, 2016, Proceedings, Part IV 14. Springer International Publishing, 2016: 354-370.}
+\bibitem{Han K, Wang Y, Tian Q, et al. Ghostnet: More features from cheap operations[C]//Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2020: 1580-1589.}
+\bibitem{Wang Z, Sun W, Zhu Q, et al. Face Mask‐Wearing Detection Model Based on Loss Function and Attention Mechanism[J]. Computational Intelligence and Neuroscience, 2022, 2022(1): 2452291.}
+\bibitem{Wu T, Zhang Q, Wu J, et al. An improved YOLOv5s model for effectively predict sugarcane seed replenishment positions verified by a field re-seeding robot[J]. Computers and Electronics in Agriculture, 2023, 214: 108280.}
+\bibitem{Xing Y, Han X, Pan X, et al. EMG-YOLO: Road crack detection algorithm for edge computing devices[J]. Frontiers in neurorobotics, 2024, 18: 1423738.}
+\bibitem{Wang A, Chen H, Lin Z, et al. Repvit: Revisiting mobile cnn from vit perspective[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2024: 15909-15920.}
+\bibitem{Farhadi A, Redmon J. Yolov3: An incremental improvement[C]//Computer vision and pattern recognition. Berlin/Heidelberg, Germany: Springer, 2018, 1804: 1-6.}
+\bibitem{Zhu X, Lyu S, Wang X, et al. TPH-YOLOv5: Improved YOLOv5 based on transformer prediction head for object detection on drone-captured scenarios[C]//Proceedings of the IEEE/CVF international conference on computer vision. 2021: 2778-2788.}
+\bibitem{Wang A, Chen H, Liu L, et al. Yolov10: Real-time end-to-end object detection[J]. arXiv preprint arXiv:2405.14458, 2024.}
+\bibitem{Zhang R, Liu T, Liu W, et al. YOLO-CRD: A Lightweight Model for the Detection of Rice Diseases in Natural Environments[J]. Phyton-International Journal of Experimental Botany, 2024, 93(6): 1275-1296.}
+\bibitem{Khanam R, Hussain M. Yolov11: An overview of the key architectural enhancements[J]. arXiv preprint arXiv:2410.17725, 2024.}
+\end{thebibliography}
+
+附  录
+
+
+\chapter{附录}
+
+
+
+% ============================================
+%  表格（自动提取自 docx，建议手动调整位置）
+% ============================================
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+农作物类别 & 类标签 & 类名称 & 图像数量 & 农作物类别 & 类标签 & 类名称 & 图像数量 \\
+\hline
+苹果 & APAS & 疮痂病 & 630 & 马铃薯 & PTEB & 早疫病 & 1000 \\
+\hline
+苹果 & APBR & 黑腐病 & 621 & 马铃薯 & PTLB & 晚疫病 & 1000 \\
+\hline
+苹果 & APCR & 杉锈病 & 275 & 马铃薯 & PTHE & 健康 & 152 \\
+\hline
+苹果 & APHE & 健康 & 1645 & 树莓 & RAHE & 健康 & 371 \\
+\hline
+蓝莓 & BLHE & 健康 & 1502 & 大豆 & SOHE & 健康 & 5089 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+农作物类别 & 类标签 & 类名称 & 图像数量 & 农作物类别 & 类标签 & 类名称 & 图像数量 \\
+\hline
+樱桃 & CHPM & 白粉病 & 1052 & 南瓜 & SQPM & 白粉病 & 1835 \\
+\hline
+樱桃 & CHHE & 健康 & 853 & 草莓 & STLS & 叶灼病 & 1109 \\
+\hline
+玉米 & CCGL & 褐斑病 & 513 & 草莓 & STHE & 健康 & 456 \\
+\hline
+玉米 & CCOR & 常见锈病 & 1192 & 番茄 & TMBS & 细菌性斑点病 & 2127 \\
+\hline
+玉米 & CNLB & 北方叶枯病 & 983 & 番茄 & TMEB & 早疫病 & 1000 \\
+\hline
+玉米 & CNHE & 健康 & 1157 & 番茄 & TMLB & 晚疫病 & 1907 \\
+\hline
+葡萄 & GRBR & 黑腐病 & 1180 & 番茄 & TMLM & 叶霉病 & 952 \\
+\hline
+葡萄 & GRES & 根腐病 & 1383 & 番茄 & TMSL & 茎点霉叶斑病 & 1771 \\
+\hline
+葡萄 & GRLB & 叶枯病 & 1076 & 番茄 & TMSM & 二斑叶螨病 & 1676 \\
+\hline
+葡萄 & GRHE & 健康 & 423 & 番茄 & TMTS & 靶斑病 & 1404 \\
+\hline
+橙子 & ORHL & 黄龙病 & 5507 & 番茄 & TMYC & 黄化曲叶病毒病 & 5357 \\
+\hline
+桃子 & PCBS & 细菌性斑点病 & 2297 & 番茄 & TMMV & 花叶病毒病 & 373 \\
+\hline
+桃子 & PCHE & 健康 & 360 & 番茄 & TMHE & 健康 & 1591 \\
+\hline
+甜椒 & PBBP & 细菌性斑点病 & 997 & 总计 &  &  & 54293 \\
+\hline
+甜椒 & PBHE & 健康 & 1477 & 总计 &  &  & 54293 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+（a）origin & （b）degrees & （c）translate \\
+\hline
+（d）scale & （e）sheer & （f）hsv \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+操作环境 & 操作环境 \\
+\hline
+CPU & AMD Ryzen 9 7950X \\
+\hline
+GPU & NVIDIA GeForce RTX 4090 D（24GB） \\
+\hline
+RAM & 64GB \\
+\hline
+torch & 2.5.1 \\
+\hline
+torchvision & 0.20.1 \\
+\hline
+CUDA & 11.8 \\
+\hline
+Python & 3.9.6 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+Parameter Name & Parameter Value \\
+\hline
+lr0 & 0.0001 \\
+\hline
+lrf & 0.001 \\
+\hline
+momentum & 0.937 \\
+\hline
+weight decay & 0.0005 \\
+\hline
+epochs & 300 \\
+\hline
+batch size & 32 \\
+\hline
+optimizer & SGD \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+Model & P
+(\%) & R
+(\%) & mAP
+(\%) & Weights
+(MB) & FLOPs
+(G) & Parameters
+(M) & Inference
+(ms) \\
+\hline
+YOLOv5s & 90.6 & 90.6 & 95.3 & 13.9 & 16.1 & 7.1 & 1.1 \\
+\hline
+YOLO-PestNet & 94.5 & 95.9 & 98.1 & 14.5 & 17.9 & 7.0 & 1.6 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+YOLOv5s &  &  &  &  &  \\
+\hline
+YOLO-PestNet &  &  &  &  &  \\
+\hline
+ & （a） & （b） & （c） & （d） & （e） \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Model & mAP
+(\%) & Weights
+(MB) & FLOPs
+(G) & Parameters
+(M) & Inference
+(ms) \\
+\hline
+YOLOv5s & 95.3 & 13.9 & 16.1 & 7.1 & 1.1 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Model & mAP
+(\%) & Weights
+(MB) & FLOPs
+(G) & Parameters
+(M) & Inference
+(ms) \\
+\hline
+YOLOv5s+SE & 95.3 & 14.0 & 16.1 & 7.2 & 1.1 \\
+\hline
+YOLOv5s+ECA & 95.9 & 13.9 & 16.1 & 7.1 & 1.1 \\
+\hline
+YOLOv5s+CBAM & 96.0 & 14.0 & 16.1 & 7.2 & 1.1 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Model & mAP
+(\%) & Weights
+(MB) & FLOPs
+(G) & Parameters
+(M) & Inference
+(ms) \\
+\hline
+YOLOv5s & 95.3 & 13.9 & 16.1 & 7.1 & 1.1 \\
+\hline
+YOLOv5s+GC & 94.3 & 14.6 & 16.6 & 7.5 & 1.2 \\
+\hline
+YOLOv5s+RVB & 94.5 & 13.9 & 15.9 & 7.1 & 1.1 \\
+\hline
+YOLOv5s+Ghost & 95.8 & 13.5 & 15.4 & 6.9 & 1.1 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Number & CBAM & P2 & Ghost & P
+(\%) & R
+(\%) & mAP
+(\%) & Weights
+(MB) & FLOPs
+(G) & Parameters
+(M) & Inference
+(ms) \\
+\hline
+① & - & - & - & 90.6 & 90.6 & 95.3 & 13.9 & 16.1 & 7.1 & 1.1 \\
+\hline
+② & T & - & - & 89.5 & 92.6 & 96.0 & 14.0 & 16.1 & 7.2 & 1.1 \\
+\hline
+③ & - & T & - & 91.9 & 94.3 & 96.3 & 14.9 & 19.2 & 7.3 & 1.7 \\
+\hline
+④ & - & - & T & 89.6 & 92.7 & 95.8 & 13.5 & 15.4 & 6.9 & 1.1 \\
+\hline
+⑤ & T & T & - & 92.6 & 96.1 & 96.8 & 15.0 & 19.3 & 7.3 & 1.7 \\
+\hline
+⑥ & T & - & T & 89.0 & 91.9 & 95.4 & 13.6 & 15.4 & 6.9 & 1.0 \\
+\hline
+⑦ & - & T & T & 93.3 & 96.1 & 97.6 & 12.7 & 17.7 & 6.1 & 1.6 \\
+\hline
+⑧ & T & T & T & 94.5 & 95.9 & 98.1 & 14.5 & 17.9 & 7.0 & 1.6 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Model & F1
+(\%) & mAP
+(\%) & Weights
+(MB) & FLOPs
+(G) & Parameters
+(M) & Inference
+(ms) \\
+\hline
+YOLOv3-tiny[26] & 49.7 & 47.9 & 16.7 & 13 & 8.8 & 0.7 \\
+\hline
+YOLOv5s[27] & 90.6 & 95.3 & 13.9 & 16.1 & 7.1 & 1.1 \\
+\hline
+YOLOv10s[28] & 80.5 & 89.8 & 15.8 & 24.6 & 8.1 & 0.9 \\
+\hline
+YOLOv11n[30] & 88.7 & 94.6 & 5.3 & 6.4 & 2.6 & 0.6 \\
+\hline
+YOLOv11s & 93.9 & 97.8 & 18.3 & 21.6 & 9.4 & 2.5 \\
+\hline
+YOLO-CRD[29] & 95.0 & 97.6 & 25.8 & 20.5 & 13.3 & 1.6 \\
+\hline
+Ours & 95.2 & 98.1 & 14.5 & 17.9 & 7.0 & 1.6 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+硬件名称 & 型号 \\
+\hline
+高性能低功耗单片机（自带摄像头） & ESP32-CAM \\
+\hline
+最小系统板 & STM32F103C8T6 \\
+\hline
+温湿度传感器 & SHT40 \\
+\hline
+光敏传感器 & 无 \\
+\hline
+18650电池盒 & 无 \\
+\hline
+8650电池 & 无 \\
+\hline
+蜂鸣器 & 无 \\
+\hline
+OLED显示屏 & SSD1306 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|}
+\hline
+ \\
+\hline
+（a）温度高于35°C \\
+\hline
+ \\
+\hline
+（b）湿度高于85\% \\
+\hline
+ \\
+\hline
+（c）光照低于35lx \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+操作环境 & 操作环境 \\
+\hline
+CPU & AMD Ryzen 9 7945HX \\
+\hline
+GPU & NVIDIA GeForce RTX 4060 Laptop（8GB） \\
+\hline
+RAM & 16GB \\
+\hline
+torch & 2.5.1 \\
+\hline
+torchvision & 0.20.1 \\
+\hline
+CUDA & 11.8 \\
+\hline
+Python & 3.9.6 \\
+\hline
+Operating System & Windows11 64-bit \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|}
+\hline
+ \\
+\hline
+（a）温湿度和光照数据存储结果 \\
+\hline
+ \\
+\hline
+（b）目标检测结果存储结果 \\
+\hline
+\end{tabular}
+\end{table}
+
+\end{document}

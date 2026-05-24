@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" version="21.0.0">
+  <diagram id="business-flow" name="业务流程图">
+    <mxGraphModel dx="1434" dy="810" grid="1" gridSize="10" pageWidth="1600" pageHeight="1200">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- 标题 -->
+        <mxCell id="title" value="图 4-2-2 系统业务流程图" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=20;fontColor=#1D1D1F;fontStyle=1;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="500" y="30" width="600" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ========== 主流程节点 ========== -->
+
+        <!-- 1. 用户登录 -->
+        <mxCell id="node1" value="用户登录" style="rounded=1;fillColor=#007AFF;strokeColor=#0056B3;strokeWidth=2;align=center;verticalAlign=middle;fontSize=14;fontColor=#FFFFFF;fontStyle=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="700" y="100" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- 2. 进入主界面 -->
+        <mxCell id="node2" value="进入系统主界面" style="rounded=1;fillColor=#E5F0FF;strokeColor=#007AFF;strokeWidth=2;align=center;verticalAlign=middle;fontSize=14;fontColor=#1D1D1F;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="700" y="200" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- 3. 设备管理 -->
+        <mxCell id="node3" value="设备管理" style="rounded=1;fillColor=#E5F0FF;strokeColor=#007AFF;strokeWidth=2;align=center;verticalAlign=middle;fontSize=14;fontColor=#1D1D1F;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="700" y="300" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- 4. 发起检测请求 -->
+        <mxCell id="node4" value="发起检测请求&#xa;(单条/持续)" style="rounded=1;fillColor=#34C759;strokeColor=#248A3D;strokeWidth=2;align=center;verticalAlign=middle;fontSize=14;fontColor=#FFFFFF;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="700" y="420" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- 5. 后端模型推理 -->
+        <mxCell id="node5" value="后端模型推理&#xa;(14维特征提取)" style="rounded=1;fillColor=#AF52DE;strokeColor=#8944AB;strokeWidth=2;align=center;verticalAlign=middle;fontSize=14;fontColor=#FFFFFF;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="700" y="520" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- 6. 条件判断 - 异常检测结果 -->
+        <mxCell id="node6" value="异常检测结果" style="rhombus;fillColor=#FF9500;strokeColor=#C45500;strokeWidth=2;align=center;verticalAlign=middle;fontSize=12;fontColor=#FFFFFF;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="720" y="620" width="160" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- 6a. 正常分支 -->
+        <mxCell id="node6a" value="正常" style="rounded=1;fillColor=#34C759;strokeColor=#248A3D;strokeWidth=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#FFFFFF;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="940" y="630" width="80" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- 6b. 异常分支 -->
+        <mxCell id="node6b" value="异常" style="rounded=1;fillColor=#FF3B30;strokeColor=#D70015;strokeWidth=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#FFFFFF;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="580" y="630" width="80" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- 7a. 保存记录（正常） -->
+        <mxCell id="node7a" value="保存检测记录" style="rounded=1;fillColor=#E5F0FF;strokeColor=#007AFF;strokeWidth=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#1D1D1F;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="630" width="120" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- 7b. 异常联动（异常分支） -->
+        <mxCell id="node7b" value="保存记录&#xa;状态更新&#xa;告警创建&#xa;评分更新" style="rounded=1;fillColor=#FFE6CC;strokeColor=#FF9500;strokeWidth=2;align=center;verticalAlign=middle;fontSize=11;fontColor=#1D1D1F;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="480" y="720" width="140" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- 8. 结果展示 -->
+        <mxCell id="node8" value="结果展示&#xa;(历史记录/监控面板)" style="rounded=1;fillColor=#E5F0FF;strokeColor=#007AFF;strokeWidth=2;align=center;verticalAlign=middle;fontSize=14;fontColor=#1D1D1F;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="700" y="830" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- 9. 历史追踪与处置 -->
+        <mxCell id="node9" value="历史追踪与处置&#xa;(告警详情/导出)" style="rounded=1;fillColor=#E5F0FF;strokeColor=#007AFF;strokeWidth=2;align=center;verticalAlign=middle;fontSize=14;fontColor=#1D1D1F;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="700" y="930" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ========== 连接线 ========== -->
+
+        <!-- 1 -> 2 -->
+        <mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;rounded=0;strokeColor=#6E6E73;strokeWidth=2;exitX=0.5;exitY=1;exitPerimeter=0;entryX=0.5;entryY=0;entryPerimeter=0;" edge="1" parent="1" source="node1" target="node2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 2 -> 3 -->
+        <mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;rounded=0;strokeColor=#6E6E73;strokeWidth=2;exitX=0.5;exitY=1;exitPerimeter=0;entryX=0.5;entryY=0;entryPerimeter=0;" edge="1" parent="1" source="node2" target="node3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 3 -> 4 -->
+        <mxCell id="e3" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;rounded=0;strokeColor=#6E6E73;strokeWidth=2;exitX=0.5;exitY=1;exitPerimeter=0;entryX=0.5;entryY=0;entryPerimeter=0;" edge="1" parent="1" source="node3" target="node4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 4 -> 5 -->
+        <mxCell id="e4" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;rounded=0;strokeColor=#6E6E73;strokeWidth=2;exitX=0.5;exitY=1;exitPerimeter=0;entryX=0.5;entryY=0;entryPerimeter=0;" edge="1" parent="1" source="node4" target="node5">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 5 -> 6 (条件判断) -->
+        <mxCell id="e5" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;rounded=0;strokeColor=#6E6E73;strokeWidth=2;exitX=0.5;exitY=1;exitPerimeter=0;entryX=0.5;entryY=0;entryPerimeter=0;" edge="1" parent="1" source="node5" target="node6">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 6 -> 正常分支 (右) -->
+        <mxCell id="e6a" value="正常" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;rounded=0;strokeColor=#34C759;strokeWidth=2;exitX=1;exitY=0.5;exitPerimeter=0;entryX=0;entryY=0.5;entryPerimeter=0;" edge="1" parent="1" source="node6" target="node6a">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 6 -> 异常分支 (左) -->
+        <mxCell id="e6b" value="异常" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;rounded=0;strokeColor=#FF3B30;strokeWidth=2;exitX=0;exitY=0.5;exitPerimeter=0;entryX=1;entryY=0.5;entryPerimeter=0;" edge="1" parent="1" source="node6" target="node6b">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 正常 -> 保存记录 -->
+        <mxCell id="e7a" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;rounded=0;strokeColor=#34C759;strokeWidth=2;exitX=1;exitY=0.5;exitPerimeter=0;entryX=0;entryY=0.5;entryPerimeter=0;" edge="1" parent="1" source="node6a" target="node7a">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 保存记录 -> 结果展示 -->
+        <mxCell id="e7a-2" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;rounded=0;strokeColor=#007AFF;strokeWidth=2;exitX=0.5;exitY=1;exitPerimeter=0;entryX=1;entryY=0;entryPerimeter=0;" edge="1" parent="1" source="node7a" target="node8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1110" y="750" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 异常 -> 异常联动 -->
+        <mxCell id="e7b" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;rounded=0;strokeColor=#FF3B30;strokeWidth=2;exitX=0.5;exitY=1;exitPerimeter=0;entryX=0.5;entryY=0;entryPerimeter=0;" edge="1" parent="1" source="node6b" target="node7b">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- 异常联动 -> 结果展示 -->
+        <mxCell id="e7b-2" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;rounded=0;strokeColor=#FF9500;strokeWidth=2;exitX=0.5;exitY=1;exitPerimeter=0;entryX=0;entryY=0.5;entryPerimeter=0;" edge="1" parent="1" source="node7b" target="node8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="600" y="860" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 结果展示 -> 历史追踪 -->
+        <mxCell id="e8" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;rounded=0;strokeColor=#6E6E73;strokeWidth=2;exitX=0.5;exitY=1;exitPerimeter=0;entryX=0.5;entryY=0;entryPerimeter=0;" edge="1" parent="1" source="node8" target="node9">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ========== 循环回溯线 ========== -->
+        <!-- 从设备管理可以回到发起检测（可选路径） -->
+        <mxCell id="loop-back" value="返回设备管理" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;dashed=1;dashPattern=8 8;rounded=0;strokeColor=#6E6E73;strokeWidth=1.5;exitX=0;exitY=0.5;exitPerimeter=0;entryX=0;entryY=0.5;entryPerimeter=0;" edge="1" parent="1" source="node4" target="node3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="550" y="450"/>
+              <mxPoint x="550" y="330"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ========== 图例 ========== -->
+        <mxCell id="legend-bg" value="" style="rounded=1;fillColor=#F8F8F8;strokeColor=#E0E0E0;strokeWidth=1;align=left;verticalAlign=top;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="40" y="100" width="150" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend-title" value="图例" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#1D1D1F;fontStyle=1;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry x="50" y="110" width="60" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg-normal" value="" style="rounded=1;fillColor=#34C759;strokeColor=#248A3D;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="140" width="30" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg-normal-t" value="正常流程" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#6E6E73;" vertex="1" parent="1">
+          <mxGeometry x="85" y="140" width="80" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg-abnormal" value="" style="rounded=1;fillColor=#FF3B30;strokeColor=#D70015;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="170" width="30" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg-abnormal-t" value="异常分支" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#6E6E73;" vertex="1" parent="1">
+          <mxGeometry x="85" y="170" width="80" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg-loop" value="---" style="text;html=1;strokeColor=#6E6E73;fillColor=none;align=left;verticalAlign=middle;fontSize=14;fontColor=#6E6E73;" vertex="1" parent="1">
+          <mxGeometry x="50" y="200" width="30" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg-loop-t" value="可选/循环路径" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#6E6E73;" vertex="1" parent="1">
+          <mxGeometry x="85" y="200" width="100" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- ========== 说明文字 ========== -->
+        <mxCell id="note" value="系统已经从孤立的模型调用&#xa;发展为具有明确业务路径&#xa;和结果闭环的完整应用系统" style="text;html=1;strokeColor=#8E8E93;fillColor=#FFF8E7;strokeWidth=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#6E6E73;fontStyle=italic;whiteSpace=wrap;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="900" width="250" height="70" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-04-05T21:45:00.000Z" agent="AI" version="24.0.0">
+  <diagram name="自编码器网络结构" id="autoencoder-arch">
+    <mxGraphModel dx="1200" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- 标题 -->
+        <mxCell id="title" value="图 3-3 轻量化自编码器网络结构" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=16;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="150" y="15" width="700" height="35" as="geometry"/>
+        </mxCell>
+
+        <!-- ====== 网络结构主体 ====== -->
+
+        <!-- 输入层 Input: 14维 -->
+        <mxCell id="input-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2d6a4f;strokeColor=#1b4332;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="80" y="70" width="100" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="input-label" value="Input&#xa;输入层&#xa;x ∈ R¹⁴" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="85" y="140" width="90" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- 箭头 input -> h1 -->
+        <mxCell id="arrow-in-h1" value="" style="endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2d6a4f;" edge="1" parent="1" source="input-box" target="h1-box">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label-in-h1" value="W₁(14×4)&#xa;b₁(4)&#xa;ReLU&#xa;60参数" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=9;fontColor=#2d6a4f;" vertex="1" parent="1">
+          <mxGeometry x="175" y="115" width="75" height="65" as="geometry"/>
+        </mxCell>
+
+        <!-- 编码器第一层 h1: 4维 -->
+        <mxCell id="h1-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#40916c;strokeColor=#2d6a4f;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="270" y="95" width="80" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="h1-label" value="Hidden&#xa;隐藏层1&#xa;h₁ ∈ R⁴" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="275" y="135" width="70" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- 箭头 h1 -> z (latent) -->
+        <mxCell id="arrow-h1-z" value="" style="endArrow=block;endFill=1;strokeWidth=2;strokeColor=#b85450;" edge="1" parent="1" source="h1-box" target="z-box">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label-h1-z" value="W₂(4×2)&#xa;b₂(2)&#xa;ReLU&#xa;10参数" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=9;fontColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="348" y="125" width="68" height="58" as="geometry"/>
+        </mxCell>
+
+        <!-- 潜在空间 z: 2维 (中心) -->
+        <mxCell id="z-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b85450;strokeColor=#7f1d1d;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="430" y="130" width="70" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="z-label" value="Latent&#xa;潜在空间&#xa;z ∈ R²" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="433" y="142" width="64" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- 箭头 z -> h2 -->
+        <mxCell id="arrow-z-h2" value="" style="endArrow=block;endFill=1;strokeWidth=2;strokeColor=#6c8ebf;" edge="1" parent="1" source="z-box" target="h2-box">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label-z-h2" value="W₃(2×4)&#xa;b₃(4)&#xa;ReLU&#xa;12参数" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=9;fontColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="500" y="125" width="68" height="58" as="geometry"/>
+        </mxCell>
+
+        <!-- 解码器第一层 h2: 4维 -->
+        <mxCell id="h2-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6c8ebf;strokeColor=#3d5a80;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="580" y="95" width="80" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="h2-label" value="Hidden&#xa;隐藏层2&#xa;h₂ ∈ R⁴" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="585" y="135" width="70" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- 箭头 h2 -> output -->
+        <mxCell id="arrow-h2-out" value="" style="endArrow=block;endFill=1;strokeWidth=2;strokeColor=#9673a6;" edge="1" parent="1" source="h2-box" target="out-box">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="label-h2-out" value="W₄(4×14)&#xa;b₄(14)&#xa;Linear&#xa;70参数" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=9;fontColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="668" y="115" width="72" height="62" as="geometry"/>
+        </mxCell>
+
+        <!-- 输出层 Output: 14维 -->
+        <mxCell id="out-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9673a6;strokeColor=#581c87;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="750" y="70" width="100" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="out-label" value="Output&#xa;输出层&#xa;x̂ ∈ R¹⁴" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="755" y="140" width="90" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ====== 编码器/解码器标注 ====== -->
+        <!-- 编码器区域框 -->
+        <mxCell id="encoder-region" value="" style="rounded=1;dashed=1;dashPattern=8 4;strokeColor=#2d6a4f;strokeWidth=2;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="60" y="55" width="450" height="220" as="geometry"/>
+        </mxCell>
+        <mxCell id="encoder-tag" value="编码器 Encoder" style="text;html=1;strokeColor=none;fillColor=#2d6a4f;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="56" width="110" height="22" as="geometry"/>
+        </mxCell>
+
+        <!-- 解码器区域框 -->
+        <mxCell id="decoder-region" value="" style="rounded=1;dashed=1;dashPattern=8 4;strokeColor=#9673a6;strokeWidth=2;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="420" y="55" width="440" height="220" as="geometry"/>
+        </mxCell>
+        <mxCell id="decoder-tag" value="解码器 Decoder" style="text;html=1;strokeColor=none;fillColor=#9673a6;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="720" y="56" width="110" height="22" as="geometry"/>
+        </mxCell>
+
+        <!-- ====== 数学公式区 ====== -->
+        <mxCell id="math-header" value="逐层数学表达式" style="text;html=1;strokeColor=#1a1a2e;fillColor=#1a1a2e;align=center;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="295" width="1040" height="28" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="math-content" value="编码器L1： h₁ = ReLU(W₁ᵀx + b₁)， W₁∈R¹⁴ˣ⁴， b₁∈R⁴    |    编码器L2（潜在空间）：z = ReLU(W₂ᵀh₁ + b₂)， W₂∈R⁴ˣ²， b₂∈R²    |    解码器L1： h₂ = ReLU(W₃ᵀz + b₃)， W₃∈R²ˣ⁴， b₃∈R⁴    |    解码器输出： x̂ = W₄ᵀh₂ + b₄， W₄∈R⁴ˣ¹⁴， b₄∈R¹⁴" style="text;html=1;strokeColor=#1a1a2e;fillColor=#f8fafc;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="80" y="323" width="1040" height="36" as="geometry"/>
+        </mxCell>
+
+        <!-- ====== 参数量表格 ====== -->
+        <mxCell id="table-header" value="参数量统计表" style="text;html=1;strokeColor=#2d6a4f;fillColor=#2d6a4f;align=center;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="375" width="600" height="28" as="geometry"/>
+        </mxCell>
+
+        <!-- 表头行 -->
+        <mxCell id="t-h1" value="网络层" style="text;html=1;strokeColor=#2d6a4f;fillColor=#d8f3dc;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="403" width="180" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-h2" value="权重形状" style="text;html=1;strokeColor=#2d6a4f;fillColor=#d8f3dc;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="260" y="403" width="120" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-h3" value="偏置长度" style="text;html=1;strokeColor=#2d6a4f;fillColor=#d8f3dc;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="380" y="403" width="100" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-h4" value="参数量小计" style="text;html=1;strokeColor=#2d6a4f;fillColor=#d8f3dc;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="480" y="403" width="100" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-h5" value="激活函数" style="text;html=1;strokeColor=#2d6a4f;fillColor=#d8f3dc;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="403" width="100" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- 数据行1 -->
+        <mxCell id="t-r1-c1" value="Input → Hidden（编码器L1）" style="text;html=1;strokeColor=#2d6a4f;fillColor=#f0fff4;align=center;verticalAlign=middle;fontSize=9;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="429" width="180" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r1-c2" value="(14, 4)" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=center;verticalAlign=middle;fontSize=9;fontFamily=Courier New;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="260" y="429" width="120" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r1-c3" value="4" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=center;verticalAlign=middle;fontSize=9;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="380" y="429" width="100" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r1-c4" value="60" style="text;html=1;strokeColor=#2d6a4f;fillColor=#fffbeb;align=center;verticalAlign=middle;fontSize=9;fontColor=#b85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="429" width="100" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r1-c5" value="ReLU" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=center;verticalAlign=middle;fontSize=9;fontFamily=Courier New;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="429" width="100" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- 数据行2 -->
+        <mxCell id="t-r2-c1" value="Hidden → Latent（编码器L2）" style="text;html=1;strokeColor=#2d6a4f;fillColor=#f0fff4;align=center;verticalAlign=middle;fontSize=9;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="455" width="180" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r2-c2" value="(4, 2)" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=center;verticalAlign=middle;fontSize=9;fontFamily=Courier New;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="260" y="455" width="120" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r2-c3" value="2" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=center;verticalAlign=middle;fontSize=9;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="380" y="455" width="100" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r2-c4" value="10" style="text;html=1;strokeColor=#2d6a4f;fillColor=#fffbeb;align=center;verticalAlign=middle;fontSize=9;fontColor=#b85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="455" width="100" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r2-c5" value="ReLU" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=center;verticalAlign=middle;fontSize=9;fontFamily=Courier New;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="455" width="100" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- 数据行3 -->
+        <mxCell id="t-r3-c1" value="Latent → Hidden（解码器L1）" style="text;html=1;strokeColor=#2d6a4f;fillColor=#f0fff4;align=center;verticalAlign=middle;fontSize=9;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="481" width="180" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r3-c2" value="(2, 4)" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=center;verticalAlign=middle;fontSize=9;fontFamily=Courier New;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="260" y="481" width="120" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r3-c3" value="4" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=center;verticalAlign=middle;fontSize=9;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="380" y="481" width="100" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r3-c4" value="12" style="text;html=1;strokeColor=#2d6a4f;fillColor=#fffbeb;align=center;verticalAlign=middle;fontSize=9;fontColor=#b85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="481" width="100" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r3-c5" value="ReLU" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=center;verticalAlign=middle;fontSize=9;fontFamily=Courier New;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="481" width="100" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- 数据行4 -->
+        <mxCell id="t-r4-c1" value="Hidden → Output（解码器L2）" style="text;html=1;strokeColor=#2d6a4f;fillColor=#f0fff4;align=center;verticalAlign=middle;fontSize=9;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="507" width="180" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r4-c2" value="(4, 14)" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=center;verticalAlign=middle;fontSize=9;fontFamily=Courier New;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="260" y="507" width="120" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r4-c3" value="14" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=center;verticalAlign=middle;fontSize=9;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="380" y="507" width="100" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r4-c4" value="70" style="text;html=1;strokeColor=#2d6a4f;fillColor=#fffbeb;align=center;verticalAlign=middle;fontSize=9;fontColor=#b85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="507" width="100" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-r4-c5" value="Linear" style="text;html=1;strokeColor=#2d6a4f;fillColor=#ffffff;align=center;verticalAlign=middle;fontSize=9;fontFamily=Courier New;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="507" width="100" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- 合计行 -->
+        <mxCell id="t-sum-c1" value="合计" style="text;html=1;strokeColor=#2d6a4f;fillColor=#d8f3dc;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="80" y="533" width="180" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-sum-c2" value="— " style="text;html=1;strokeColor=#2d6a4f;fillColor=#d8f3dc;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="260" y="533" width="120" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-sum-c3" value="—" style="text;html=1;strokeColor=#2d6a4f;fillColor=#d8f3dc;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="380" y="533" width="100" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-sum-c4" value="152" style="text;html=1;strokeColor=#2d6a4f;fillColor=#fef3c7;align=center;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="480" y="533" width="100" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="t-sum-c5" value="— " style="text;html=1;strokeColor=#2d6a4f;fillColor=#d8f3dc;align=center;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="580" y="533" width="100" height="28" as="geometry"/>
+        </mxCell>
+
+        <!-- ====== 右侧关键指标 ====== -->
+        <mxCell id="metrics-header" value="轻量化设计要点" style="text;html=1;strokeColor=#1a1a2e;fillColor=#1a1a2e;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#ffffff;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="710" y="375" width="410" height="26" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="m1" value="总参数量：152 个" style="text;html=1;strokeColor=#2d6a4f;fillColor=#d8f3dc;align=left;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;spacingLeft=8;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="710" y="405" width="195" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="m2" value="标准自编码器：10³ ~ 10⁵ 量级" style="text;html=1;strokeColor=#b85450;fillColor=#f8d7da;align=left;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;spacingLeft=8;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="915" y="405" width="205" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="m3" value="推理计算量：~304 FLOPs/样本" style="text;html=1;strokeColor=#1d3557;fillColor=#a8dadc;align=left;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;spacingLeft=8;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="710" y="441" width="195" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="m4" value="单样本推理：毫秒级完成" style="text;html=1;strokeColor=#1d3557;fillColor=#a8dadc;align=left;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;spacingLeft=8;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="915" y="441" width="205" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="m5" value="激活函数：ReLU = max(0,x)" style="text;html=1;strokeColor=#6c8ebf;fillColor=#d6e4f0;align=left;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;spacingLeft=8;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="710" y="477" width="195" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="m6" value="输出层：线性激活（同数值空间）" style="text;html=1;strokeColor=#6c8ebf;fillColor=#d6e4f0;align=left;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;spacingLeft=8;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="915" y="477" width="205" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="m7" value="权重初始化：Kaiming正态 N(0, 2/n_in)" style="text;html=1;strokeColor=#9673a6;fillColor=#e9d5ff;align=left;verticalAlign=middle;fontSize=10;fontColor=#1a1a2e;spacingLeft=8;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="710" y="513" width="410" height="30" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,246 @@
+<mxfile host="app.diagrams.net" modified="2026-04-05T20:08:00.000Z" agent="AI" version="24.0.0">
+  <diagram name="后端总体架构" uuid="mno345">
+    <mxGraphModel dx="1400" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- 标题 -->
+        <mxCell id="main_title" value="4.4 后端总体架构与模块划分" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=16;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="700" y="15" width="400" height="35" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== 第1层：框架与技术栈 ===== -->
+        <mxCell id="layer1_bg" value="框架与技术栈" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="1680" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- 技术栈组件 -->
+        <mxCell id="tech_django" value="Django" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0a7a0a;strokeColor=#0a7a0a;fontColor=#ffffff;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="68" width="100" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="tech_drf" value="Django REST Framework" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0a7a0a;strokeColor=#0a7a0a;fontColor=#ffffff;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="68" width="170" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="tech_jwt" value="SimpleJWT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0a7a0a;strokeColor=#0a7a0a;fontColor=#ffffff;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="68" width="100" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="tech_channels" value="Channels (WebSocket)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0a7a0a;strokeColor=#0a7a0a;fontColor=#ffffff;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="68" width="150" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="tech_spectacular" value="drf-spectacular (Swagger)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0a7a0a;strokeColor=#0a7a0a;fontColor=#ffffff;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="68" width="170" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="tech_asgi" value="ASGI (Uvicorn)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0a7a0a;strokeColor=#0a7a0a;fontColor=#ffffff;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="68" width="130" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== 第2层：模块组织 ===== -->
+        <mxCell id="layer2_bg" value="模块组织 (backend/)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f4fd;strokeColor=#6c8ebf;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="115" width="1680" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- 5个模块 -->
+        <mxCell id="mod_common" value="common&#10;公共响应/异常/工具" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="60" y="122" width="130" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="mod_users" value="users&#10;用户认证/账户管理/审计日志" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="200" y="122" width="160" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="mod_devices" value="devices&#10;设备管理/安全评分/分组管理" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="370" y="122" width="170" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="mod_detection" value="detection&#10;检测服务/批量检测/持续检测/WebSocket" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="550" y="122" width="210" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="mod_logs" value="logs&#10;告警日志/系统日志" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="770" y="122" width="140" height="35" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== 第3层：接口路由 ===== -->
+        <mxCell id="layer3_bg" value="接口路由 (api/v1/)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="170" width="1680" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- 路由项 -->
+        <mxCell id="route_users" value="api/v1/users/&#10;用户注册/登录/信息/密码" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="60" y="177" width="150" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="route_devices" value="api/v1/devices/&#10;设备CRUD/分组/安全评分" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="220" y="177" width="150" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="route_detection" value="api/v1/detection/&#10;单条/批量/持续/记录查询/统计" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="380" y="177" width="200" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="route_logs" value="api/v1/logs/&#10;告警日志/系统日志" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="590" y="177" width="150" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="route_audit" value="api/v1/audit/&#10;审计日志查询/导出" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="750" y="177" width="150" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="route_docs" value="Swagger / Redoc&#10;接口文档入口" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="920" y="177" width="130" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== 第4层：核心服务流程 ===== -->
+        <mxCell id="layer4_bg" value="核心服务流程" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e8f7;strokeColor=#9673a6;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="225" width="1680" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- 流程步骤 -->
+        <mxCell id="flow1" value="① 接收请求" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="60" y="232" width="100" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="flow2" value="② 序列化器&#10;参数校验" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="170" y="232" width="90" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="flow3" value="③ 业务服务类&#10;逻辑处理" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="270" y="232" width="100" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="flow4" value="④ 模型服务&#10;算法推理" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="380" y="232" width="90" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="flow5" value="⑤ 业务联动&#10;告警/评分更新" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="480" y="232" width="100" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="flow6" value="⑥ 数据库&#10;读写持久化" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="590" y="232" width="100" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="flow7" value="⑦ 统一响应&#10;结构封装" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="700" y="232" width="100" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="flow8" value="⑧ WebSocket&#10;实时推送(可选)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="810" y="232" width="100" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- 流程箭头 -->
+        <mxCell id="arrow_l3_4" value="" style="endArrow=classic;html=1;strokeWidth=1.5;endFill=1;startFill=0;dashed=0;" edge="1" parent="1" source="flow1" target="flow2">
+          <mxGeometry relative="0.5" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow_l3_5" value="" style="endArrow=classic;html=1;strokeWidth=1.5;endFill=1;startFill=0;" edge="1" parent="1" source="flow2" target="flow3">
+          <mxGeometry relative="0.5" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow_l3_6" value="" style="endArrow=classic;html=1;strokeWidth=1.5;endFill=1;startFill=0;" edge="1" parent="1" source="flow3" target="flow4">
+          <mxGeometry relative="0.5" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow_l3_7" value="" style="endArrow=classic;html=1;strokeWidth=1.5;endFill=1;startFill=0;" edge="1" parent="1" source="flow4" target="flow5">
+          <mxGeometry relative="0.5" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow_l3_8" value="" style="endArrow=classic;html=1;strokeWidth=1.5;endFill=1;startFill=0;" edge="1" parent="1" source="flow5" target="flow6">
+          <mxGeometry relative="0.5" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow_l3_9" value="" style="endArrow=classic;html=1;strokeWidth=1.5;endFill=1;startFill=0;" edge="1" parent="1" source="flow6" target="flow7">
+          <mxGeometry relative="0.5" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow_l3_10" value="" style="endArrow=classic;html=1;strokeWidth=1.5;endFill=1;startFill=0;dashed=1;" edge="1" parent="1" source="flow7" target="flow8">
+          <mxGeometry relative="0.5" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== 第5层：算法与数据支撑 ===== -->
+        <mxCell id="layer5_bg" value="算法支撑与数据持久层" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdf2f2;strokeColor=#b85450;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="280" width="1680" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- 算法支撑 -->
+        <mxCell id="algo_isoforest" value="轻量化孤立森林&#10;50棵树/深度≤8" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="60" y="287" width="150" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="algo_autoenc" value="简化自编码器&#10;8→4→2→4→8 (<100参数)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="220" y="287" width="160" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="algo_feature" value="14维特征向量提取&#10;duration/orig_bytes/resp_bytes/..." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="390" y="287" width="200" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="algo_standardizer" value="StandardScaler&#10;特征标准化" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="600" y="287" width="140" height="28" as="geometry"/>
+        </mxCell>
+
+        <!-- 数据持久 -->
+        <mxCell id="db_mysql" value="MySQL&#10;主数据库" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="800" y="287" width="120" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="db_sqlite" value="SQLite&#10;(开发数据库)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="930" y="287" width="120" height="28" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== 第6层：JWT认证与权限控制 ===== -->
+        <mxCell id="layer6_bg" value="认证与权限控制" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff;strokeColor=#82b366;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="335" width="1680" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- JWT流程 -->
+        <mxCell id="jwt1" value="用户登录&#10;→ 签发Token" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="60" y="342" width="120" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="jwt2" value="访问令牌&#10;(Access Token)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="190" y="342" width="110" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="jwt3" value="刷新令牌&#10;(Refresh Token)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="310" y="342" width="110" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="jwt4" value="路由守卫&#10;(前端拦截)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="430" y="342" width="110" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="jwt5" value="后端接口&#10;认证校验" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="550" y="342" width="110" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="jwt6" value="普通用户&#10;查看自身日志" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="700" y="342" width="120" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="jwt7" value="管理员&#10;查看全部日志" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="830" y="342" width="120" height="28" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== 图例 ===== -->
+        <mxCell id="legend_bg" value="图例说明" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#cccccc;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="60" width="150" height="280" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_content" value="【层级颜色】&#xa;■ 绿色 ─ 框架与技术栈&#xa;■ 蓝色 ─ 模块组织&#xa;■ 黄色 ─ 接口路由&#xa;■ 紫色 ─ 核心服务流程&#xa;■ 红色 ─ 算法支撑&#xa;■ 绿色 ─ 数据持久/认证&#xa;&#xa;【箭头说明】&#xa;── 实线 ─ 主要流程&#xa;── 虚线 ─ 可选流程&#xa;&#xa;【缩进关系】&#xa;同一层级内左→右&#xa;表示调用/组成关系" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=8;fontFamily=Courier New;" vertex="1" parent="1">
+          <mxGeometry x="1105" y="90" width="140" height="240" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== 模块详情 ===== -->
+        <!-- users模块详情 -->
+        <mxCell id="users_detail_bg" value="4.4.2 users 模块：JWT认证/账户管理/审计日志" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="400" width="520" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="users_detail" value="• 注册/登录 → JWT签发访问令牌+刷新令牌&#xa;• 当前用户信息查询/资料修改/密码修改&#xa;• 账户操作同步记录审计日志&#xa;• 普通用户查看自身日志 | 管理员可查看更大范围" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="45" y="435" width="510" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- devices模块详情 -->
+        <mxCell id="devices_detail_bg" value="4.4.3 devices 模块：设备管理/安全评分" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="580" y="400" width="520" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="devices_detail" value="• 设备CRUD、分组管理、设备类型/位置/IP/状态维护&#xa;• 安全评分服务：异常数量+严重程度+时间衰减+置信度 → 设备评分&#xa;• 支持单个/批量更新、评分历史查询、全局安全概览统计" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="585" y="435" width="510" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- detection模块详情 -->
+        <mxCell id="detection_detail_bg" value="4.4.4-4.4.5 detection 模块：检测服务/批量/持续/WebSocket" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="520" width="520" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="detection_detail" value="• 14维特征提取 → 模型推理 → 返回异常/攻击类型/分数/置信度&#xa;• 业务联动：保存记录→更新统计→告警生成→评分更新→状态联动&#xa;• 批量检测：CSV上传→任务创建→逐条处理→状态更新→临时文件清理&#xa;• 持续检测：配置持久化→独立运行→WebSocket实时推送" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="45" y="555" width="510" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- logs模块详情 -->
+        <mxCell id="logs_detail_bg" value="4.4.6 logs 模块：告警管理/审计追踪" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="580" y="520" width="520" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="logs_detail" value="• 告警列表/详情/状态更新/批量处理/统计分析&#xa;• 告警级别×处理状态 联合筛选 → 生命周期管理&#xa;• 审计日志覆盖：注册/登录/登出/资料修改/检测/启停/导出等关键行为&#xa;• 日志内容：时间+用户+资源+结果+请求元数据+变更快照&#xa;• "告警日志+审计日志"双轨机制：追踪安全事件本身+用户操作行为" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="585" y="555" width="510" height="95" as="geometry"/>
+        </mxCell>
+
+        <!-- WebSocket模块详情 -->
+        <mxCell id="ws_detail_bg" value="4.4.7 WebSocket 实时推送" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="665" width="1060" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="ws_detail" value="• ASGI协议路由：HTTP(Web请求) vs WebSocket连接区分处理&#xa;• 消费者：连接建立→加入实时检测组→回送连接成功→ping/pong心跳维持→异步检测调用→结果回送&#xa;• 统一推送工具类：主动向所有在线客户端广播检测结果或告警事件&#xa;• 为后续扩展更强实时性监控平台提供可靠基础" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="45" y="700" width="1050" height="75" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,5 +1,5 @@
 """
-ASGI config for Lite-SH-Anomaly project.
+ASGI config for ShieldHome project.
 支持WebSocket实时推送
 """
 

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" version="21.0.0">
+  <diagram id="iforest-flow" name="轻量化孤立森林算法流程">
+    <mxGraphModel dx="1400" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ==================== 图例 ==================== -->
+        <mxCell id="LEGEND_BG" value="" style="rounded=0;fillColor=#F5F5F7;strokeColor=#E5E5EA;align=left;verticalAlign=top;spacing=10;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="40" y="20" width="420" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="L0" value="图例" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;spacing=4;fontSize=12;fontStyle=1;fontColor=#1D1D1F;fontFamily=Menlo;" parent="1" vertex="1">
+          <mxGeometry x="50" y="28" width="60" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="L1" value="开始/结束" style="ellipse;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="120" y="28" width="55" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="L2" value="处理过程" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="190" y="28" width="55" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="L3" value="决策判断" style="rhombus;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+          <mxGeometry x="260" y="18" width="55" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="L4" value="循环迭代" style="rounded=1;fillColor=#ffe6cc;strokeColor=#d79b00;dashed=1;" parent="1" vertex="1">
+          <mxGeometry x="330" y="28" width="55" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="L5" value="公式计算" style="rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="400" y="28" width="55" height="28" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 阶段分组标签 ==================== -->
+        <mxCell id="GRP_START" value="① 开始" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=center;verticalAlign=middle;whiteSpace=wrap;spacing=4;fontSize=14;fontStyle=1;fontColor=#1D1D1F;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="560" y="80" width="100" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="GRP_TREE" value="② 构建孤立树" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;verticalAlign=middle;whiteSpace=wrap;spacing=4;fontSize=14;fontStyle=1;fontColor=#1D1D1F;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="540" y="300" width="120" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="GRP_SPLIT" value="③ 随机分裂" style="text;html=1;strokeColor=#82b366;fillColor=#d5e8d4;align=center;verticalAlign=middle;whiteSpace=wrap;spacing=4;fontSize=14;fontStyle=1;fontColor=#1D1D1F;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="540" y="400" width="120" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="GRP_CALC" value="④ 计算异常分数" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=center;verticalAlign=middle;whiteSpace=wrap;spacing=4;fontSize=14;fontStyle=1;fontColor=#1D1D1F;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="540" y="620" width="120" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="GRP_JUDGE" value="⑤ 阈值判断" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;verticalAlign=middle;whiteSpace=wrap;spacing=4;fontSize=14;fontStyle=1;fontColor=#1D1D1F;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="540" y="820" width="120" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="GRP_END" value="⑥ 输出结果" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=center;verticalAlign=middle;whiteSpace=wrap;spacing=4;fontSize=14;fontStyle=1;fontColor=#1D1D1F;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="540" y="1020" width="120" height="35" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ① 开始阶段 ==================== -->
+        <mxCell id="S1" value="" style="ellipse;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="700" y="80" width="100" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="S1T" value="开始推理" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;spacing=4;fontSize=12;fontColor=#1D1D1F;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="700" y="88" width="100" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="I1" value="输入样本 x&#xa;(14维特征向量)" style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontSize=12;fontColor=#1D1D1F;" parent="1" vertex="1">
+          <mxGeometry x="660" y="160" width="180" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ② 构建孤立树（循环开始） ==================== -->
+        <mxCell id="T0" value="构建第 t 棵树&#xa;(t = 1, 2, ..., 50)" style="rounded=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontSize=12;fontColor=#1D1D1F;dashed=1;" parent="1" vertex="1">
+          <mxGeometry x="660" y="260" width="180" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ③ 随机分裂 ==================== -->
+        <mxCell id="T1" value="随机选择特征 q&#xa;随机选择分裂点 p" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontSize=11;fontColor=#1D1D1F;" parent="1" vertex="1">
+          <mxGeometry x="660" y="360" width="180" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="T2" value="x_q &lt; p ?" style="rhombus;fillColor=#fff2cc;strokeColor=#d6b656;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontSize=12;fontColor=#1D1D1F;" parent="1" vertex="1">
+          <mxGeometry x="670" y="460" width="160" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- 左分支：递归分裂 -->
+        <mxCell id="T3" value="递归分裂&#xa;直到叶节点" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontSize=11;fontColor=#1D1D1F;" parent="1" vertex="1">
+          <mxGeometry x="420" y="560" width="150" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- 右分支：记录路径 -->
+        <mxCell id="T4" value="记录路径长度&#xa;h_t(x)" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontSize=11;fontColor=#1D1D1F;" parent="1" vertex="1">
+          <mxGeometry x="930" y="560" width="150" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 循环判断 ==================== -->
+        <mxCell id="T5" value="t &lt; 50 ?" style="rhombus;fillColor=#fff2cc;strokeColor=#d6b656;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontSize=12;fontColor=#1D1D1F;" parent="1" vertex="1">
+          <mxGeometry x="670" y="670" width="160" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ④ 计算异常分数 ==================== -->
+        <mxCell id="F1" value="计算平均路径长度&#xa;E[h(x)] = (1/50) · Σ h_t(x)" style="rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontSize=11;fontColor=#1D1D1F;" parent="1" vertex="1">
+          <mxGeometry x="660" y="660" width="180" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="F2" value="异常分数公式&#xa;s(x,n) = 2^(-E[h(x)] / c(n))&#xa;&#xa;c(n) = 2·ln(n-1) + ξ" style="rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontSize=11;fontColor=#1D1D1F;" parent="1" vertex="1">
+          <mxGeometry x="660" y="760" width="200" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 公式说明 ==================== -->
+        <mxCell id="NB1" value="注：c(n) 为二叉树平均路径&#xa;长度期望，ξ ≈ 0.5772&#xa;(欧拉常数)" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;whiteSpace=wrap;spacing=4;fontSize=10;fontColor=#1D1D1F;fontFamily=Menlo;dashed=1;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="880" y="770" width="180" height="65" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ⑤ 阈值判断 ==================== -->
+        <mxCell id="D1" value="s(x,n) &gt; θ ?&#xa;(阈值 θ = 0.7)" style="rhombus;fillColor=#fff2cc;strokeColor=#d6b656;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontSize=12;fontColor=#1D1D1F;" parent="1" vertex="1">
+          <mxGeometry x="670" y="870" width="180" height="75" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ⑥ 输出结果 ==================== -->
+        <mxCell id="O1" value="输出结果&#xa;label = 1 (异常)&#xa;score = s(x,n)" style="rounded=1;fillColor=#f8cecc;strokeColor=#b85450;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontSize=11;fontColor=#1D1D1F;" parent="1" vertex="1">
+          <mxGeometry x="440" y="1000" width="160" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="O2" value="输出结果&#xa;label = 0 (正常)&#xa;score = s(x,n)" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontSize=11;fontColor=#1D1D1F;" parent="1" vertex="1">
+          <mxGeometry x="900" y="1000" width="160" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 连接线：开始 → 输入 ==================== -->
+        <mxCell id="E0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0.5;exitY=1;entryX=0.5;entryY=0;labelBackgroundColor=#ffffff;" parent="1" source="S1" target="I1" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 连接线：输入 → 构建树 ==================== -->
+        <mxCell id="E1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0.5;exitY=1;entryX=0.5;entryY=0;labelBackgroundColor=#ffffff;" parent="1" source="I1" target="T0" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 连接线：构建树 → 随机选择特征 ==================== -->
+        <mxCell id="E2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0.5;exitY=1;entryX=0.5;entryY=0;labelBackgroundColor=#ffffff;" parent="1" source="T0" target="T1" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 连接线：随机选择特征 → 决策 ==================== -->
+        <mxCell id="E3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0.5;exitY=1;entryX=0.5;entryY=0;labelBackgroundColor=#ffffff;" parent="1" source="T1" target="T2" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 连接线：决策 → 左分支（递归分裂） ==================== -->
+        <mxCell id="E4Y" value="是" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0;exitY=0.5;entryX=1;entryY=0.5;labelBackgroundColor=#ffffff;" parent="1" source="T2" target="T3" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 连接线：决策 → 右分支（记录路径） ==================== -->
+        <mxCell id="E4N" value="否" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=1;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=#ffffff;" parent="1" source="T2" target="T4" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 连接线：左分支 → 循环判断 ==================== -->
+        <mxCell id="E5a" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0.5;exitY=1;entryX=0.2;entryY=0;labelBackgroundColor=#ffffff;" parent="1" source="T3" target="T5" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 连接线：右分支 → 循环判断 ==================== -->
+        <mxCell id="E5b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0.5;exitY=1;entryX=0.8;entryY=0;labelBackgroundColor=#ffffff;" parent="1" source="T4" target="T5" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 连接线：循环判断 → 继续建树（回路） ==================== -->
+        <mxCell id="E6Y" value="是&#xa;(t+1)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=#ffe6cc;strokeColor=#d79b00;dashPattern=8 4;" parent="1" source="T5" target="T0" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="580" y="705"/>
+              <mxPoint x="580" y="290"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== 连接线：循环判断 → 计算平均路径长度 ==================== -->
+        <mxCell id="E6N" value="否" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0.5;exitY=1;entryX=0.5;entryY=0;labelBackgroundColor=#ffffff;" parent="1" source="T5" target="F1" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 连接线：计算平均路径 → 异常分数 ==================== -->
+        <mxCell id="E7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0.5;exitY=1;entryX=0.5;entryY=0;labelBackgroundColor=#ffffff;" parent="1" source="F1" target="F2" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 连接线：异常分数 → 阈值判断 ==================== -->
+        <mxCell id="E8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0.5;exitY=1;entryX=0.5;entryY=0;labelBackgroundColor=#ffffff;" parent="1" source="F2" target="D1" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 连接线：阈值判断 → 异常输出 ==================== -->
+        <mxCell id="E9Y" value="是&#xa;(异常)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=#ffffff;" parent="1" source="D1" target="O1" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== 连接线：阈值判断 → 正常输出 ==================== -->
+        <mxCell id="E9N" value="否&#xa;(正常)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=1;exitY=0.5;entryX=1;entryY=0.5;labelBackgroundColor=#ffffff;" parent="1" source="D1" target="O2" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

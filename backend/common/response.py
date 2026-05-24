@@ -49,7 +49,13 @@ class APIResponse:
     def paginated(queryset, serializer_class, request):
         """分页响应"""
         from rest_framework.pagination import PageNumberPagination
-        paginator = PageNumberPagination()
+        
+        class CustomPagination(PageNumberPagination):
+            page_size = 10
+            page_size_query_param = 'page_size'
+            max_page_size = 100
+        
+        paginator = CustomPagination()
         page = paginator.paginate_queryset(queryset, request)
         if page is not None:
             serializer = serializer_class(page, many=True)
@@ -58,6 +64,9 @@ class APIResponse:
                 'message': 'success',
                 'data': {
                     'count': paginator.page.paginator.count,
+                    'page': paginator.page.number,
+                    'page_size': paginator.page_size,
+                    'total_pages': paginator.page.paginator.num_pages,
                     'next': paginator.get_next_link(),
                     'previous': paginator.get_previous_link(),
                     'results': serializer.data
@@ -67,5 +76,11 @@ class APIResponse:
         return Response({
             'code': 200,
             'message': 'success',
-            'data': serializer.data
+            'data': {
+                'count': len(queryset),
+                'page': 1,
+                'page_size': len(queryset),
+                'total_pages': 1,
+                'results': serializer.data
+            }
         })
