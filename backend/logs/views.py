@@ -129,3 +129,52 @@ class AlertDetailView(APIView):
                 context={'device_names': get_device_names([alert])},
             ).data,
         })
+
+
+class AlertBatchStatusView(APIView):
+    """Apply one handling status to a bounded set of alerts."""
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        from logs.serializers import AlertBatchStatusUpdateSerializer
+        from users.models import AuditLog
+
+        serializer = AlertBatchStatusUpdateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        alert_ids = serializer.validated_data['alert_ids']
+        new_status = serializer.validated_data['status']
+        handling_note = serializer.validated_data.get('handling_note', '')
+        alerts = list(AlertLog.objects.filter(id__in=alert_ids))
+        found_ids = {alert.id for alert in alerts}
+        missing_ids = sorted(set(alert_ids) - found_ids)
+        if missing_ids:
+            return Response(
+                {
+                    'code': status.HTTP_404_NOT_FOUND,
+                    'message': 'Some alerts were not found',
+                    'data': {'missing_alert_ids': missing_ids},
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        handled_at = timezone.now()
+        AlertLog.objects.filter(id__in=alert_ids).update(
+            status=new_status,
+            handling_note=handling_note,
+            handled_at=handled_at,
+        )
+        AuditLog.log(
+            user=request.user,
+            action='update',
+            resource_type='detection_result',
+            resource_name='Bulk alert update',
+            description=f'Updated {len(alert_ids)} alerts to {new_status}',
+            request=request,
+            new_value={'alert_ids': alert_ids, 'status': new_status, 'handling_note': handling_note},
+        )
+        return Response({
+            'code': status.HTTP_200_OK,
+            'message': 'Alerts updated',
+            'data': {'updated_count': len(alert_ids), 'status': new_status},
+        })
