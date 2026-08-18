@@ -12,7 +12,7 @@ class AlertService:
         if not result.get('is_anomaly'):
             return None
 
-        attack_type = result.get('attack_type', AlertLog.Level.WARNING)
+        attack_type = result.get('attack_type', 'unknown')
         confidence = float(result.get('confidence', 0.0))
         alert, _ = AlertLog.objects.get_or_create(
             detection_record=record,
