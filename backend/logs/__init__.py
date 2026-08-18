@@ -1,0 +1,1 @@
+"""Alert log application."""
