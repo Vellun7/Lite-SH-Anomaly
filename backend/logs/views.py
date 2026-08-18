@@ -83,3 +83,49 @@ class AlertListView(APIView):
                 'results': serializer.data,
             },
         })
+
+
+class AlertDetailView(APIView):
+    """Update one alert's handling status."""
+
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, alert_id):
+        from logs.serializers import AlertStatusUpdateSerializer
+        from users.models import AuditLog
+
+        try:
+            alert = AlertLog.objects.get(pk=alert_id)
+        except AlertLog.DoesNotExist:
+            return Response(
+                {'code': status.HTTP_404_NOT_FOUND, 'message': 'Alert not found', 'data': None},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = AlertStatusUpdateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        old_status = alert.status
+        alert.status = serializer.validated_data['status']
+        alert.handling_note = serializer.validated_data.get('handling_note', alert.handling_note)
+        alert.handled_at = timezone.now()
+        alert.save(update_fields=['status', 'handling_note', 'handled_at', 'updated_at'])
+
+        AuditLog.log(
+            user=request.user,
+            action='update',
+            resource_type='detection_result',
+            resource_id=alert.id,
+            resource_name=alert.title,
+            description=f'Updated alert status from {old_status} to {alert.status}',
+            request=request,
+            old_value={'status': old_status},
+            new_value={'status': alert.status, 'handling_note': alert.handling_note},
+        )
+        return Response({
+            'code': status.HTTP_200_OK,
+            'message': 'Alert updated',
+            'data': AlertLogSerializer(
+                alert,
+                context={'device_names': get_device_names([alert])},
+            ).data,
+        })
