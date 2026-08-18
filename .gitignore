@@ -71,3 +71,8 @@ frontend/node_modules/
 
 # Build output
 frontend/dist/
+
+# Track the Django logs application; the generic *.log rule above still ignores log files.
+!backend/logs/
+!backend/logs/**/
+!backend/logs/**/*.py
