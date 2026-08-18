@@ -48,9 +48,9 @@ class AlertLog(models.Model):
         verbose_name_plural = 'Alert logs'
         ordering = ['-created_at']
         indexes = [
-            models.Index(fields=['status', 'created_at']),
-            models.Index(fields=['device_id', 'created_at']),
-            models.Index(fields=['level', 'created_at']),
+            models.Index(fields=['status', 'created_at'], name='alert_logs_status__cc1194_idx'),
+            models.Index(fields=['device_id', 'created_at'], name='alert_logs_device__103051_idx'),
+            models.Index(fields=['level', 'created_at'], name='alert_logs_level_80b005_idx'),
         ]
 
     def __str__(self):
