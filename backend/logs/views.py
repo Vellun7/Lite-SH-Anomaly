@@ -178,3 +178,53 @@ class AlertBatchStatusView(APIView):
             'message': 'Alerts updated',
             'data': {'updated_count': len(alert_ids), 'status': new_status},
         })
+
+
+class AlertStatsView(APIView):
+    """Return aggregate alert counts for dashboard charts."""
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        from datetime import timedelta
+        from django.db.models import Count, Q
+        from django.db.models.functions import TruncDay
+
+        try:
+            days = int(request.query_params.get('days', 7))
+        except ValueError:
+            return Response(
+                {'code': status.HTTP_400_BAD_REQUEST, 'message': 'days must be an integer', 'data': None},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if not 1 <= days <= 365:
+            return Response(
+                {'code': status.HTTP_400_BAD_REQUEST, 'message': 'days must be between 1 and 365', 'data': None},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        start_time = timezone.now() - timedelta(days=days - 1)
+        alerts = AlertLog.objects.filter(created_at__gte=start_time)
+        level_distribution = list(
+            alerts.values('level').annotate(count=Count('id')).order_by('level')
+        )
+        daily_trend = [
+            {'date': item['date'].strftime('%Y-%m-%d'), 'count': item['count']}
+            for item in (
+                alerts.annotate(date=TruncDay('created_at'))
+                .values('date')
+                .annotate(count=Count('id'))
+                .order_by('date')
+            )
+        ]
+        return Response({
+            'code': status.HTTP_200_OK,
+            'message': 'success',
+            'data': {
+                'total': alerts.count(),
+                'pending': alerts.filter(status=AlertLog.Status.PENDING).count(),
+                'resolved': alerts.filter(status=AlertLog.Status.RESOLVED).count(),
+                'level_distribution': level_distribution,
+                'daily_trend': daily_trend,
+            },
+        })
